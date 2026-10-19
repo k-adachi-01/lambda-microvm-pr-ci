@@ -68,6 +68,12 @@ jobs:
       HEAD_SHA: ${{ github.event.pull_request.head.sha || inputs.head_sha }}
       PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
     steps:
+      - name: Resolve head SHA (dispatch)
+        if: github.event_name == 'workflow_dispatch' && env.HEAD_SHA == ''
+        run: echo "HEAD_SHA=$(gh api repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER --jq .head.sha)" >> "$GITHUB_ENV"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Gate untrusted sources
         id: gate
         env:
@@ -76,7 +82,7 @@ jobs:
           set -euo pipefail
           is_fork='${{ github.event.pull_request.head.repo.fork }}'
           labels='${{ toJSON(github.event.pull_request.labels.*.name) }}'
-          echo "fork=${is_fork} labels=${labels}"
+          echo "fork=${is_fork} labels=${labels} head=$HEAD_SHA"
           if [ "${{ inputs.simulate_fork_gate }}" = "true" ] || \
              { [ "${{ github.event_name }}" = "pull_request_target" ] && [ "$is_fork" = "true" ] \
                && ! echo "$labels" | grep -q 'microvm-ci-ok'; }; then
@@ -85,17 +91,12 @@ jobs:
               -f name=microvm-ci -f head_sha="$HEAD_SHA" -f status=completed \
               -f conclusion=neutral \
               -f "output[title]=not run — fork requires label" \
-              -f "output[summary]=Fork PRs run only after a maintainer applies the \`microvm-ci-ok\` label (guest code executes inside a creds-free MicroVM)."
+              -f "output[summary]=Fork PRs run only after a maintainer applies the \`microvm-ci-ok\` label (guest code executes inside a creds-free MicroVM)." \
+              || echo "::warning:: neutral check-run POST failed (still gating)"
             echo "gated=true" >> "$GITHUB_OUTPUT"
           else
             echo "gated=false" >> "$GITHUB_OUTPUT"
           fi
-
-      - name: Resolve head SHA (dispatch)
-        if: github.event_name == 'workflow_dispatch' && env.HEAD_SHA == ''
-        run: echo "HEAD_SHA=$(gh api repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER --jq .head.sha)" >> "$GITHUB_ENV"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Early exit for gated fork
         if: steps.gate.outputs.gated == 'true'
