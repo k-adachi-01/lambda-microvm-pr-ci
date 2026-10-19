@@ -96,6 +96,13 @@ jobs:
         if: steps.gate.outputs.gated == 'true'
         run: echo "skipping microVM CI for unlabeled fork PR"
 
+      # Trusted control plane ONLY: under pull_request_target this checks out
+      # the BASE branch — never the PR head. Guest code arrives separately as
+      # an inert tarball and executes solely inside the MicroVM.
+      - name: Checkout base-branch control plane
+        if: steps.gate.outputs.gated != 'true'
+        uses: actions/checkout@v4
+
       - name: Download PR head tarball (inert bytes — never executed here)
         if: steps.gate.outputs.gated != 'true'
         run: gh api "repos/$GITHUB_REPOSITORY/tarball/$HEAD_SHA" > head.tgz && ls -l head.tgz
