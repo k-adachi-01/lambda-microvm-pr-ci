@@ -1,0 +1,42 @@
+Using CPython 3.12.3 interpreter at: /usr/bin/python3
+Creating virtual environment at: .venv
+Downloading botocore (15.3MiB)
+ Downloaded botocore
+Installed 7 packages in 52ms
+{
+  "artifactBytes": 22967,
+  "artifactKey": "ci/pr-4/6ed0763c6f91/pr4-r39291207820-a1/artifact.tar.gz",
+  "jobId": "pr4-r39291207820-a1",
+  "jobStatus": "failed",
+  "metadata": {
+    "event": "workflow_dispatch",
+    "head_sha": "6ed0763c6f9123951e2c113eb9b6126a993f1d1b",
+    "pr": "4",
+    "run_attempt": "1",
+    "run_id": "39291207820"
+  },
+  "microvmId": "microvm-dc2e0f80-2561-35b7-9edb-dc3a6a353e49",
+  "outDir": "out/ci",
+  "resultBundle": {
+    "bytes": 401,
+    "key": "ci/pr-4/6ed0763c6f91/pr4-r39291207820-a1/result.bundle.tar.gz"
+  },
+  "runMicrovmAttempts": [
+    {
+      "attempt": 1,
+      "ms": 557,
+      "ok": true
+    }
+  ],
+  "sha256": "a70a14a6501f1962da8d4f630c68422e98587bcd12266dfd527b275494945612",
+  "terminatedAs": "TERMINATED",
+  "timings": {
+    "fetch_s": 0.809,
+    "job_s": 0.351,
+    "package_upload_s": 0.66,
+    "submit_s": 0.606,
+    "terminate_s": 3.491,
+    "total_s": 9.903,
+    "vm_launch_s": 3.914
+  }
+}

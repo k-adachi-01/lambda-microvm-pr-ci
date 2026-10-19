@@ -1,0 +1,9 @@
+{
+  "_source": "scripts/lease -- uv run python /tmp/cb_probe2.py; project k344-prci-compare, source=s3://k344-prci-155936382172/compare/source.zip (same src+tests+buildspec), BUILD_GENERAL1_SMALL",
+  "builds": {
+    "39c40340": {"status": "SUCCEEDED", "total_s": null, "note": "first output truncated; sibling builds representative"},
+    "859cc3ef": {"status": "SUCCEEDED", "total_s": 11.1, "phases": {"QUEUED": 0, "PROVISIONING": 4, "DOWNLOAD_SOURCE": 2, "BUILD": 2, "POST_BUILD": 0}},
+    "df0ded81": {"status": "SUCCEEDED", "total_s": 9.0, "phases": {"QUEUED": 0, "PROVISIONING": 2, "DOWNLOAD_SOURCE": 2, "BUILD": 2}},
+    "3aa61938": {"status": "SUCCEEDED", "total_s": 11.5, "phases": {"QUEUED": 0, "PROVISIONING": 4, "DOWNLOAD_SOURCE": 2, "BUILD": 3}}
+  }
+}

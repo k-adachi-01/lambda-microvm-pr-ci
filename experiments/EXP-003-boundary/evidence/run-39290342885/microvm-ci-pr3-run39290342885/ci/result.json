@@ -1,0 +1,39 @@
+{
+  "durationMs": 2714,
+  "endedAt": 1792429226.465781,
+  "jobId": "pr3-r39290342885-a1",
+  "phases": {
+    "download": {
+      "bytes": 23699,
+      "ms": 462,
+      "sha256": "7bb14b6c8210da928adcb47cbd278415b1ce49c73d9a8d6f57e684fa45ec1b23",
+      "sha256Match": true
+    },
+    "extract": {
+      "files": 24,
+      "ms": 186
+    },
+    "run": {
+      "ms": 2066
+    }
+  },
+  "resultUpload": {
+    "status": 200
+  },
+  "startedAt": 1792429223.7510061,
+  "status": "succeeded",
+  "steps": [
+    {
+      "durationMs": 1050,
+      "exitCode": 0,
+      "step": "python3 -m compileall src -q",
+      "timedOut": false
+    },
+    {
+      "durationMs": 1015,
+      "exitCode": 0,
+      "step": "python3 -m unittest discover -s tests -v",
+      "timedOut": false
+    }
+  ]
+}

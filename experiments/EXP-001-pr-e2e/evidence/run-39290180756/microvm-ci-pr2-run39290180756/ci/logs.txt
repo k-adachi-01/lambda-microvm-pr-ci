@@ -1,0 +1,24 @@
+
+===== $ python3 -m compileall src -q
+
+===== $ python3 -m unittest discover -s tests -v
+test_add (test_calculator.TestCalculator.test_add) ... ok
+test_div (test_calculator.TestCalculator.test_div) ... ok
+test_div_zero (test_calculator.TestCalculator.test_div_zero) ... ok
+test_intentional_failure (test_calculator.TestCalculator.test_intentional_failure) ... FAIL
+test_mul (test_calculator.TestCalculator.test_mul) ... ok
+test_sub (test_calculator.TestCalculator.test_sub) ... ok
+
+======================================================================
+FAIL: test_intentional_failure (test_calculator.TestCalculator.test_intentional_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/ci-jobs/pr2-r39290180756-a1/src/tests/test_calculator.py", line 25, in test_intentional_failure
+    self.assertEqual(add(2, 2), 5)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 4 != 5
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.052s
+
+FAILED (failures=1)

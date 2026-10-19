@@ -1,0 +1,37 @@
+{
+  "artifactBytes": 22962,
+  "artifactKey": "ci/pr-1/e2b3c52b1aec/pr1-r39290061667-a1/artifact.tar.gz",
+  "jobId": "pr1-r39290061667-a1",
+  "jobStatus": "succeeded",
+  "metadata": {
+    "event": "pull_request_target",
+    "head_sha": "e2b3c52b1aeceeda3f9acdbf6d94d3b139599fc0",
+    "pr": "1",
+    "run_attempt": "1",
+    "run_id": "39290061667"
+  },
+  "microvmId": "microvm-1d81bff0-2e09-368e-9688-a59f599498f3",
+  "outDir": "out/ci",
+  "resultBundle": {
+    "bytes": 658,
+    "key": "ci/pr-1/e2b3c52b1aec/pr1-r39290061667-a1/result.bundle.tar.gz"
+  },
+  "runMicrovmAttempts": [
+    {
+      "attempt": 1,
+      "ms": 505,
+      "ok": true
+    }
+  ],
+  "sha256": "9d10454eda1c0611d115ea26166ec9ee51c365afa720aad2ed051006637c2ee4",
+  "terminatedAs": "TERMINATED",
+  "timings": {
+    "fetch_s": 1.02,
+    "job_s": 3.838,
+    "package_upload_s": 0.674,
+    "submit_s": 0.733,
+    "terminate_s": 3.5,
+    "total_s": 13.694,
+    "vm_launch_s": 3.84
+  }
+}

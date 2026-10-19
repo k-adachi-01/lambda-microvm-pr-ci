@@ -1,0 +1,39 @@
+{
+  "durationMs": 10085,
+  "endedAt": 1792429583.520485,
+  "jobId": "pr5-r39291213262-a1",
+  "phases": {
+    "download": {
+      "bytes": 23022,
+      "ms": 69,
+      "sha256": "703a777d084df96a92b3acee29c64839eda6caa9cfb4976f0f1cabbee0e7e12a",
+      "sha256Match": true
+    },
+    "extract": {
+      "files": 24,
+      "ms": 15
+    },
+    "run": {
+      "ms": 10000
+    }
+  },
+  "resultUpload": {
+    "status": 200
+  },
+  "startedAt": 1792429573.4346423,
+  "status": "failed",
+  "steps": [
+    {
+      "durationMs": 114,
+      "exitCode": 0,
+      "step": "python3 -m compileall src -q",
+      "timedOut": false
+    },
+    {
+      "durationMs": 9886,
+      "exitCode": null,
+      "step": "python3 -m unittest discover -s tests -v",
+      "timedOut": true
+    }
+  ]
+}

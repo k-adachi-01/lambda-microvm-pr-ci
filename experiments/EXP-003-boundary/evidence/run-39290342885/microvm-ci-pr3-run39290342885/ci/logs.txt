@@ -1,0 +1,27 @@
+
+===== $ python3 -m compileall src -q
+
+===== $ python3 -m unittest discover -s tests -v
+test_add (test_calculator.TestCalculator.test_add) ... ok
+test_div (test_calculator.TestCalculator.test_div) ... ok
+test_mul (test_calculator.TestCalculator.test_mul) ... ok
+test_sub (test_calculator.TestCalculator.test_sub) ... ok
+test_no_aws_config_files (test_no_aws_creds.TestNoAwsCredentials.test_no_aws_config_files) ... ok
+test_no_aws_env (test_no_aws_creds.TestNoAwsCredentials.test_no_aws_env) ... ok
+test_no_imds (test_no_aws_creds.TestNoAwsCredentials.test_no_imds) ... ok
+test_no_metadata_on_169254170253 (test_no_aws_creds.TestNoAwsCredentials.test_no_metadata_on_169254170253) ... ok
+test_no_process_environ_leak (test_no_aws_creds.TestNoAwsCredentials.test_no_process_environ_leak) ... /workspace/ci-jobs/pr3-r39290342885-a1/src/tests/test_no_aws_creds.py:40: ResourceWarning: unclosed file <_io.BufferedReader name='/proc/1/environ'>
+  data = open(env, "rb").read().decode(errors="replace")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/ci-jobs/pr3-r39290342885-a1/src/tests/test_no_aws_creds.py:40: ResourceWarning: unclosed file <_io.BufferedReader name='/proc/13/environ'>
+  data = open(env, "rb").read().decode(errors="replace")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/ci-jobs/pr3-r39290342885-a1/src/tests/test_no_aws_creds.py:40: ResourceWarning: unclosed file <_io.BufferedReader name='/proc/14/environ'>
+  data = open(env, "rb").read().decode(errors="replace")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.216s
+
+OK

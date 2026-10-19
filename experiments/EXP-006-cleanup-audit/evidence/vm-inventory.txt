@@ -1,0 +1,7 @@
+aws lambda-microvms list-microvms (k344-ci only), after all experiments, 2026-10-19T18:13Z
+microvm-076da163 TERMINATED   microvm-1d81bff0 TERMINATED   microvm-4cc6816c TERMINATED (runner-cancel test)
+microvm-58377e1b TERMINATED   microvm-74551c07 TERMINATED   microvm-8595fd26 TERMINATED
+microvm-8c13ffa7 TERMINATED   microvm-97ee922f TERMINATED   microvm-a760258e TERMINATED
+microvm-ae6dc977 TERMINATED   microvm-b8eaf589 TERMINATED   microvm-d6d2d64a TERMINATED
+microvm-dc2e0f80 TERMINATED (sha-tamper)   microvm-ddf8df50 TERMINATED   microvm-e3a713e8 TERMINATED (job-timeout)
+15/15 TERMINATED; aliveVms=0 also confirmed by sweeper run 39292121974

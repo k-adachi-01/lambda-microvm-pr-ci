@@ -1,0 +1,9 @@
+
+===== $ python3 -m compileall src -q
+
+===== $ python3 -m unittest discover -s tests -v
+test_add (test_calculator.TestCalculator.test_add) ... ok
+test_div (test_calculator.TestCalculator.test_div) ... ok
+test_mul (test_calculator.TestCalculator.test_mul) ... ok
+test_sub (test_calculator.TestCalculator.test_sub) ... ok
+test_slow_20s (test_slow.TestSlow.test_slow_20s) ... 

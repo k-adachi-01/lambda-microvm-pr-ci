@@ -1,0 +1,26 @@
+{
+  "_source": "/tmp/throttle_probe.py under scripts/lease, 5 concurrent RunMicrovm calls, botocore max_attempts=1",
+  "results": [
+    {"microvmId": "microvm-58377e1b-661a-3738-ab31-a687b1f31ef5", "attempts": [{"attempt": 1, "ok": true, "ms": 190}]},
+    {"microvmId": null, "attempts": [
+      {"attempt": 1, "ok": false, "code": "ServiceQuotaExceededException", "ms": 187},
+      {"attempt": 2, "ok": false, "code": "ServiceQuotaExceededException", "ms": 102},
+      {"attempt": 3, "ok": false, "code": "ServiceQuotaExceededException", "ms": 95},
+      {"attempt": 4, "ok": false, "code": "ServiceQuotaExceededException", "ms": 86},
+      {"attempt": 5, "ok": false, "code": "ServiceQuotaExceededException", "ms": 71},
+      {"attempt": 6, "ok": false, "code": "ServiceQuotaExceededException", "ms": 83}]},
+    {"microvmId": null, "attempts": [
+      {"attempt": 1, "ok": false, "code": "ServiceQuotaExceededException", "ms": 222},
+      {"attempt": 2, "ok": false, "code": "ServiceQuotaExceededException", "ms": 103},
+      {"attempt": 3, "ok": false, "code": "ServiceQuotaExceededException", "ms": 162},
+      {"attempt": 4, "ok": false, "code": "ServiceQuotaExceededException", "ms": 62},
+      {"attempt": 5, "ok": false, "code": "ServiceQuotaExceededException", "ms": 74},
+      {"attempt": 6, "ok": false, "code": "ServiceQuotaExceededException", "ms": 102}]},
+    {"microvmId": "microvm-076da163-a768-34ac-b084-b332c66e7ccb", "attempts": [{"attempt": 1, "ok": true, "ms": 200}]},
+    {"microvmId": "microvm-97ee922f-6760-3a33-8e91-07aac34753e6", "attempts": [{"attempt": 1, "ok": true, "ms": 226}]}
+  ],
+  "total_s": 24.25,
+  "launched": 3,
+  "cleanup": "all 3 launched VMs terminated in the same script",
+  "note": "the dominant failure under burst is ServiceQuotaExceededException (concurrent-memory quota 8GiB), NOT a 429 rate error; added to retryable codes in ci_job.py"
+}
