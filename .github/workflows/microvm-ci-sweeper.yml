@@ -32,5 +32,6 @@ jobs:
           mkdir -p out/sweeper
           uv run python scripts/cleanup_stale.py \
             --bucket "${{ vars.ARTIFACT_BUCKET }}" \
+            --image-arn "${{ vars.CI_IMAGE_ARN }}" \
             --max-age-minutes 20 --s3-max-age-days 2 \
             | tee "out/sweeper/sweep-$(date -u +%Y%m%dT%H%M%SZ).json"

@@ -24,6 +24,8 @@ def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--bucket", required=True)
     p.add_argument("--region", default=REGION)
+    p.add_argument("--image-arn", default=None,
+                   help="only sweep VMs of this image (the sandbox hosts other experiments)")
     p.add_argument("--max-age-minutes", type=float, default=20)
     p.add_argument("--s3-max-age-days", type=float, default=2)
     p.add_argument("--dry-run", action="store_true")
@@ -42,6 +44,8 @@ def main() -> int:
     paginator = vm.get_paginator("list_microvms")
     for page in paginator.paginate():
         for item in page.get("items", []):
+            if args.image_arn and item.get("imageArn") != args.image_arn:
+                continue
             mid = item.get("microvmId")
             state = item.get("state")
             created = item.get("createdAt")

@@ -14,7 +14,10 @@
           "token.actions.githubusercontent.com:repository_owner_id": "209649144"
         },
         "StringLike": {
-          "token.actions.githubusercontent.com:sub": "repo:k-adachi-01@209649144/lambda-microvm-pr-ci@1425896105:*"
+          "token.actions.githubusercontent.com:sub": [
+            "repo:k-adachi-01@209649144/lambda-microvm-pr-ci@1425896105:pull_request",
+            "repo:k-adachi-01@209649144/lambda-microvm-pr-ci@1425896105:ref:refs/heads/main"
+          ]
         }
       }
     }
