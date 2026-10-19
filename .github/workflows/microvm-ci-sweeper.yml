@@ -1,0 +1,36 @@
+# Orphan sweeper: terminate leftover MicroVMs and expire stale S3 CI objects.
+# Complements per-run cleanup (finally + SIGTERM handler + maximumDurationInSeconds).
+name: microvm-ci-sweeper
+
+on:
+  schedule:
+    - cron: "*/20 * * * *"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: microvm-ci-sweeper
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.MICROVM_CI_ROLE_ARN }}
+          aws-region: ap-northeast-1
+      - name: Sweep stale MicroVMs + S3 objects
+        run: |
+          mkdir -p out/sweeper
+          uv run python scripts/cleanup_stale.py \
+            --bucket "${{ vars.ARTIFACT_BUCKET }}" \
+            --max-age-minutes 20 --s3-max-age-days 2 \
+            | tee "out/sweeper/sweep-$(date -u +%Y%m%dT%H%M%SZ).json"

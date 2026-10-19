@@ -1,0 +1,182 @@
+# Disposable-CI on Lambda MicroVMs, fired per PR and reported back to Checks.
+#
+# Trust boundary:
+#   - pull_request_target: this workflow definition ALWAYS comes from the base
+#     branch, so PR/fork authors cannot modify what runs here.
+#   - The runner NEVER checks out or executes PR code. It downloads the PR head
+#     tarball as inert bytes and hands it to a creds-free MicroVM.
+#   - Job steps are fixed here (control-plane owned), not read from the repo.
+#   - Fork PRs additionally require the maintainer label `microvm-ci-ok`.
+#
+# One-time setup (human SSO):
+#   aws-sandbox-run ... -- infra/deploy.sh && scripts/lease -- scripts/build-ci-image.sh
+# Repo variables: MICROVM_CI_ROLE_ARN, ARTIFACT_BUCKET, CI_IMAGE_ARN.
+name: microvm-ci
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "PR number whose head SHA should be tested (same-repo)"
+        required: true
+      head_sha:
+        description: "explicit head SHA override (defaults to the PR's head)"
+        required: false
+      job_timeout_seconds:
+        description: "in-VM step timeout (timeout-injection tests)"
+        required: false
+        default: "300"
+      tamper_sha:
+        description: "advertise a wrong artifact sha256 (negative test)"
+        required: false
+        default: "false"
+      role_arn_override:
+        description: "assume this role instead of vars.MICROVM_CI_ROLE_ARN (OIDC denial test)"
+        required: false
+        default: ""
+      boto_max_attempts:
+        description: "botocore retry cap; 1 surfaces raw throttling"
+        required: false
+        default: "4"
+
+permissions:
+  id-token: write
+  contents: read
+  checks: write
+  pull-requests: read
+
+concurrency:
+  group: microvm-ci-${{ github.event.pull_request.number || inputs.pr_number || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  AWS_REGION: ap-northeast-1
+  JOB_TIMEOUT_SECONDS: ${{ inputs.job_timeout_seconds || '300' }}
+
+jobs:
+  run:
+    name: run
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      HEAD_SHA: ${{ github.event.pull_request.head.sha || inputs.head_sha }}
+      PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+    steps:
+      - name: Gate untrusted sources
+        id: gate
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          is_fork='${{ github.event.pull_request.head.repo.fork }}'
+          labels='${{ toJSON(github.event.pull_request.labels.*.name) }}'
+          echo "fork=${is_fork} labels=${labels}"
+          if [ "${{ github.event_name }}" = "pull_request_target" ] && [ "$is_fork" = "true" ] \
+             && ! echo "$labels" | grep -q 'microvm-ci-ok'; then
+            echo "fork PR without maintainer label microvm-ci-ok — posting neutral check"
+            gh api repos/$GITHUB_REPOSITORY/check-runs -X POST \
+              -f name=microvm-ci -f head_sha="$HEAD_SHA" -f status=completed \
+              -f conclusion=neutral \
+              -f "output[title]=not run — fork requires label" \
+              -f "output[summary]=Fork PRs run only after a maintainer applies the \`microvm-ci-ok\` label (guest code executes inside a creds-free MicroVM)."
+            echo "gated=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "gated=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Resolve head SHA (dispatch)
+        if: github.event_name == 'workflow_dispatch' && env.HEAD_SHA == ''
+        run: echo "HEAD_SHA=$(gh api repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER --jq .head.sha)" >> "$GITHUB_ENV"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Early exit for gated fork
+        if: steps.gate.outputs.gated == 'true'
+        run: echo "skipping microVM CI for unlabeled fork PR"
+
+      - name: Download PR head tarball (inert bytes — never executed here)
+        if: steps.gate.outputs.gated != 'true'
+        run: gh api "repos/$GITHUB_REPOSITORY/tarball/$HEAD_SHA" > head.tgz && ls -l head.tgz
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Record OIDC token claims (evidence for trust minimisation)
+        if: steps.gate.outputs.gated != 'true'
+        run: |
+          tok=$(curl -sf -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r .value)
+          python3 -c 'import base64,json,sys; p=sys.stdin.read().strip().split(".")[1]; p+="="*(-len(p)%4); print(json.dumps(json.loads(base64.urlsafe_b64decode(p)),indent=2,sort_keys=True))' <<<"$tok" | tee oidc-claims.json
+
+      - name: Configure AWS credentials (OIDC)
+        if: steps.gate.outputs.gated != 'true'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ inputs.role_arn_override || vars.MICROVM_CI_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup uv + deps
+        if: steps.gate.outputs.gated != 'true'
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: false
+
+      - name: Run CI job on a fresh MicroVM
+        if: steps.gate.outputs.gated != 'true'
+        id: job
+        run: |
+          set -o pipefail
+          mkdir -p out/ci
+          EXTRA=()
+          if [ "${{ inputs.tamper_sha }}" = "true" ]; then
+            EXTRA+=(--artifact-sha256 "0000000000000000000000000000000000000000000000000000000000000000")
+          fi
+          uv run python ci/orchestrator/ci_job.py \
+            --bucket "${{ vars.ARTIFACT_BUCKET }}" \
+            --image-identifier "${{ vars.CI_IMAGE_ARN }}" \
+            --source-tarball head.tgz --strip-components 1 \
+            --job-id "pr${PR_NUMBER}-r${GITHUB_RUN_ID}-a${GITHUB_RUN_ATTEMPT}" \
+            --key-prefix "ci/pr-${PR_NUMBER}/${HEAD_SHA:0:12}" \
+            --label "pr=${PR_NUMBER}" --label "head_sha=${HEAD_SHA}" \
+            --label "run_id=${GITHUB_RUN_ID}" --label "run_attempt=${GITHUB_RUN_ATTEMPT}" \
+            --label "event=${GITHUB_EVENT_NAME}" \
+            --step "python3 -m compileall src -q" \
+            --step "python3 -m unittest discover -s tests -v" \
+            --job-timeout-seconds "$JOB_TIMEOUT_SECONDS" \
+            --boto-max-attempts "${{ inputs.boto_max_attempts || '4' }}" \
+            "${EXTRA[@]}" \
+            --out-dir out/ci 2>&1 | tee out/job-stdout.txt
+          exit ${PIPESTATUS[0]}
+
+      - name: Update Check run output
+        if: always() && steps.gate.outputs.gated != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          cr=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/attempts/$GITHUB_RUN_ATTEMPT/jobs" \
+                --jq '.jobs[] | select(.name=="run") | .check_run_url' | head -1)
+          [ -z "$cr" ] && { echo "no check run url"; exit 0; }
+          title=$(jq -r '.jobStatus // "no-status"' out/ci/summary.json 2>/dev/null)
+          body=$(cat out/ci/check_summary.md 2>/dev/null || echo "no summary produced")
+          gh api "$cr" -X PATCH \
+            -f "output[title]=microvm-ci: ${title}" \
+            -f "output[summary]=${body}" \
+            -f "output[text]=jobId/microvmId/S3 keys are in the run artifacts (out/ci/summary.json)"
+
+      - name: Upload job evidence
+        if: always() && steps.gate.outputs.gated != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: microvm-ci-pr${{ env.PR_NUMBER }}-run${{ github.run_id }}
+          path: |
+            out/
+          if-no-files-found: ignore
+
+      - name: Conclude from orchestrator outcome
+        if: always() && steps.gate.outputs.gated != 'true'
+        run: |
+          outcome="${{ steps.job.outcome }}"
+          echo "orchestrator outcome: ${outcome}"
+          [ "$outcome" = "success" ]

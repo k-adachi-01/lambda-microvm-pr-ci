@@ -1,0 +1,8 @@
+out/
+.venv/
+__pycache__/
+*.pyc
+infra/outputs.env
+head.tgz
+oidc-claims.json
+.DS_Store

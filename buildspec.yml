@@ -1,0 +1,13 @@
+version: 0.2
+
+# CodeBuild comparison target for K-344: identical steps to the MicroVM CI and
+# the GHA-hosted baseline, so timing/cost deltas are attributable to the
+# execution substrate, not the test content.
+phases:
+  install:
+    runtime-versions:
+      python: latest
+  build:
+    commands:
+      - python3 -m compileall src -q
+      - python3 -m unittest discover -s tests -v

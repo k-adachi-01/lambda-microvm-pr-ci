@@ -1,0 +1,28 @@
+# Baseline: the same tests executed directly on a GitHub-hosted runner.
+# Used for the K-344 comparison (queue time, run time, cost, effort). This is
+# the conventional posture — PR code executes ON the runner; the microVM CI
+# exists to isolate that execution instead.
+name: gha-baseline
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gha-baseline-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - run: python3 -m compileall src -q
+      - run: python3 -m unittest discover -s tests -v

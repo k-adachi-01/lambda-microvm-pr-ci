@@ -1,0 +1,22 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "@OIDC_PROVIDER_ARN@"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+          "token.actions.githubusercontent.com:repository_id": "1425896105",
+          "token.actions.githubusercontent.com:repository_owner_id": "209649144"
+        },
+        "StringLike": {
+          "token.actions.githubusercontent.com:sub": "repo:k-adachi-01@209649144/lambda-microvm-pr-ci@1425896105:*"
+        }
+      }
+    }
+  ]
+}

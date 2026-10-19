@@ -1,0 +1,11 @@
+[project]
+name = "k344-pr-ci"
+version = "0.1.0"
+description = "K-344: disposable CI on Lambda MicroVMs driven by GitHub PRs, results reported to Checks"
+requires-python = ">=3.12"
+dependencies = [
+    "boto3>=1.35",
+]
+
+[tool.uv]
+package = false
