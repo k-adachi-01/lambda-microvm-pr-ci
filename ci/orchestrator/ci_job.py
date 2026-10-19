@@ -42,6 +42,10 @@ THROTTLE_CODES = {
     "TooManyRequestsException",
     "RequestLimitExceeded",
     "ServiceUnavailableException",
+    # Backpressure, not a rate limit: the account's concurrent-microVM memory
+    # quota was exceeded (measured 8 GiB; see K-346). VMs churn in seconds, so
+    # bounded retry is the right behaviour for CI bursts.
+    "ServiceQuotaExceededException",
 }
 
 

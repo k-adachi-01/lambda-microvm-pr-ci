@@ -40,6 +40,10 @@ on:
         description: "botocore retry cap; 1 surfaces raw throttling"
         required: false
         default: "4"
+      simulate_fork_gate:
+        description: "exercise the unlabeled-fork gate path (posts neutral check, skips CI)"
+        required: false
+        default: "false"
 
 permissions:
   id-token: write
@@ -73,8 +77,9 @@ jobs:
           is_fork='${{ github.event.pull_request.head.repo.fork }}'
           labels='${{ toJSON(github.event.pull_request.labels.*.name) }}'
           echo "fork=${is_fork} labels=${labels}"
-          if [ "${{ github.event_name }}" = "pull_request_target" ] && [ "$is_fork" = "true" ] \
-             && ! echo "$labels" | grep -q 'microvm-ci-ok'; then
+          if [ "${{ inputs.simulate_fork_gate }}" = "true" ] || \
+             { [ "${{ github.event_name }}" = "pull_request_target" ] && [ "$is_fork" = "true" ] \
+               && ! echo "$labels" | grep -q 'microvm-ci-ok'; }; then
             echo "fork PR without maintainer label microvm-ci-ok — posting neutral check"
             gh api repos/$GITHUB_REPOSITORY/check-runs -X POST \
               -f name=microvm-ci -f head_sha="$HEAD_SHA" -f status=completed \
