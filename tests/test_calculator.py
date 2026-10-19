@@ -1,10 +1,6 @@
-import sys
 import unittest
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-
-from calculator import add, div, mul, sub  # noqa: E402
+from src.calculator import add, div, mul, sub, is_positive
 
 
 class TestCalculator(unittest.TestCase):
@@ -19,8 +15,14 @@ class TestCalculator(unittest.TestCase):
 
     def test_div(self):
         self.assertEqual(div(10, 2), 5)
+
+    def test_div_zero(self):
         with self.assertRaises(ZeroDivisionError):
             div(1, 0)
+
+    def test_intentional_failure(self):
+        # EXP-001: forces a red check to prove failure propagation
+        self.assertEqual(add(2, 2), 5)
 
 
 if __name__ == "__main__":

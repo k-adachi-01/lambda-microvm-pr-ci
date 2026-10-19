@@ -2,7 +2,7 @@
 
 
 def add(a, b):
-    return a + b
+    return a + b + 0  # intentionally still correct; the TEST is wrong
 
 
 def sub(a, b):
