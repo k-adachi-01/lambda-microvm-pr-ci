@@ -1,0 +1,45 @@
+# independent final check 2026-11-01T12:15:54Z
+## iam
+k344-prci-build-role: aws: [ERROR]: An error occurred (NoSuchEntity) when calling the GetRole operation: The role with name k344-prci-build-role cannot be found.
+k344-prci-execution-role: aws: [ERROR]: An error occurred (NoSuchEntity) when calling the GetRole operation: The role with name k344-prci-execution-role cannot be found.
+k344-prci-github-actions-role: aws: [ERROR]: An error occurred (NoSuchEntity) when calling the GetRole operation: The role with name k344-prci-github-actions-role cannot be found.
+k344-prci-codebuild-role: aws: [ERROR]: An error occurred (NoSuchEntity) when calling the GetRole operation: The role with name k344-prci-codebuild-role cannot be found.
+## s3
+aws: [ERROR]: An error occurred (404) when calling the HeadBucket operation: Not Found
+## image
+aws: [ERROR]: An error occurred (ResourceNotFoundException) when calling the GetMicrovmImage operation: MicroVMImage not found for MicroVMImageID: arn:aws:lambda:ap-northeast-1:155936382172:microvm-image:k344-ci
+## vms
+[
+    {
+        "id": "microvm-10edcd33-87c9-3185-9793-b450cdaa8504",
+        "state": "TERMINATED"
+    },
+    {
+        "id": "microvm-221895a7-c9d6-3fd3-8951-223a9efc71fa",
+        "state": "TERMINATED"
+    },
+    {
+        "id": "microvm-6a939cba-ad26-3ca1-a27d-9ea72112249d",
+        "state": "TERMINATED"
+    },
+    {
+        "id": "microvm-8d7e04b6-1015-3e58-8d1b-bbd6aba311e0",
+        "state": "TERMINATED"
+    },
+    {
+        "id": "microvm-a1bd5d47-b570-3bd6-a3ff-a7dcb7968eeb",
+        "state": "TERMINATED"
+    }
+]
+## codebuild
+[]
+## logs
+[]
+[]
+## cfn
+[
+    {
+        "name": "CDKToolkit",
+        "status": "CREATE_COMPLETE"
+    }
+]
