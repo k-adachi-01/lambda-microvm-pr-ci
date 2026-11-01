@@ -94,6 +94,8 @@ gh workflow disable microvm-ci-sweeper.yml
 # 再構築時: gh workflow enable microvm-ci-sweeper.yml
 ```
 
+撤収後は `microvm-ci` の PR 実行も OIDC で失敗する（role が無いため）。再開するときは上のセットアップ手順を再実行し、repo variables を更新する。
+
 ## 実験用 workflow_dispatch 入力
 
 `microvm-ci.yml` は手動起動で失敗注入を再現できる（EXP-004 の再現手順）:
