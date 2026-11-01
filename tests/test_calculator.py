@@ -17,6 +17,9 @@ class TestCalculator(unittest.TestCase):
     def test_mul(self):
         self.assertEqual(mul(4, 3), 12)
 
+    def test_intentional_failure_for_k344_reverify(self):
+        self.assertEqual(add(1, 1), 3)
+
     def test_div(self):
         self.assertEqual(div(10, 2), 5)
         with self.assertRaises(ZeroDivisionError):
