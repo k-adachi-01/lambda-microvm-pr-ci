@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from calculator import add, div, mul, sub  # noqa: E402
+from calculator import add, div, is_positive, mul, sub  # noqa: E402
 
 
 class TestCalculator(unittest.TestCase):
@@ -16,6 +16,11 @@ class TestCalculator(unittest.TestCase):
 
     def test_mul(self):
         self.assertEqual(mul(4, 3), 12)
+
+    def test_is_positive(self):
+        self.assertTrue(is_positive(1))
+        self.assertFalse(is_positive(0))
+        self.assertFalse(is_positive(-1))
 
     def test_div(self):
         self.assertEqual(div(10, 2), 5)
