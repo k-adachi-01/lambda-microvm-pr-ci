@@ -73,6 +73,7 @@ pass/fail/timeout/tamper の全 run で `resultBundle.verified=true`、`terminat
 - `scripts/delstack_check.sh`: delstack v2.12.3 で CloudFormation を確認。残るのは保全対象の `CDKToolkit` のみで、K-344 スタックは 0（`evidence/teardown/delstack.log`）
 - `scripts/verify_clean.py`: `clean: true`。IAM role / S3 bucket / MicroVM image / active VM / log group / CodeBuild / ECR / k344 タグ付き資源はすべて空（`evidence/teardown/verify-clean.json`）
 - TERMINATED の VM 履歴 5 件は API 上に残るが、`activeMicrovmVms` は空。Lambda MicroVMs には VM 削除 API がなく、これは履歴であって稼働資源ではない `[仕様: aws lambda-microvms help]`
+- インフラが無い状態で 20 分ごとに失敗するため、撤収後に `gh workflow disable microvm-ci-sweeper.yml` で sweeper の schedule を停止した（再構築時に enable する）
 
 ## 解釈
 

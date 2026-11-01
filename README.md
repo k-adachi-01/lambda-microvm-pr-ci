@@ -87,6 +87,13 @@ AWS_PROFILE=aws-poc-sandbox uv run python scripts/verify_clean.py \
 
 `verify_clean.py` が `clean: true` を返し、`delstack_check.sh` が K-344 の CloudFormation スタックなしを報告した状態を「残存ゼロ」とする。
 
+撤収後は、インフラが無い状態で 20 分ごとに失敗する sweeper の schedule を止める:
+
+```bash
+gh workflow disable microvm-ci-sweeper.yml
+# 再構築時: gh workflow enable microvm-ci-sweeper.yml
+```
+
 ## 実験用 workflow_dispatch 入力
 
 `microvm-ci.yml` は手動起動で失敗注入を再現できる（EXP-004 の再現手順）:
