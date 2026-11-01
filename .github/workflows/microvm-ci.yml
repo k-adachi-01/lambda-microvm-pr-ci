@@ -86,8 +86,8 @@ jobs:
           set -euo pipefail
           echo "fork=${IS_FORK} labels=${LABELS_JSON} head=${HEAD_SHA}"
           # Event values reach the shell only through env vars, never through
-          # direct ${{ }} interpolation. Label names are compared as JSON, not
-          # as a shell string, so a quote in a label cannot break the script.
+          # direct GitHub-expression interpolation. Label names are compared as
+          # JSON, not as a shell string, so a quote cannot break the script.
           if [ "$SIMULATE_FORK_GATE" = "true" ] || \
              { [ "$EVENT_NAME" = "pull_request_target" ] && [ "$IS_FORK" = "true" ] \
                && ! printf '%s' "$LABELS_JSON" | jq -e 'index("microvm-ci-ok")' >/dev/null; }; then
