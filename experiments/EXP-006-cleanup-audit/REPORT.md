@@ -18,7 +18,7 @@
 ## 結果 [実測]
 
 - `evidence/vm-inventory.txt`: k344-ci の VM 15/15 TERMINATED（runner-cancel で作られた `microvm-4cc6816c`、sha-tamper の `microvm-dc2e0f80`、timeout の `microvm-e3a713e8` 等を含む）
-- sweeper run `39292121974`（`microvm-ci-sweeper` workflow, `ref:refs/heads/main` sub で OIDC 認証）: `aliveVms=0`, `s3Deleted=0` [実測: `evidence/sweeper-39292121974/run.log`]
+- sweeper run `39292121974`（`microvm-ci-sweeper` workflow, `ref:refs/heads/main` sub で OIDC 認証）: `aliveVms=0`, `s3Deleted=0`
 - S3 には `ci/pr-N/<sha>-r<run>/artifact.tar.gz` と `result.bundle.tar.gz` が run ごとに残る設計通り。`compare/source.zip`（CodeBuild 用）と `artifacts/ci-image.zip`（image build 用）も配置済み
 - 他実験（k342/k346）の VM が同居する account で sweeper が `image-arn` フィルタを持つことで他実験 VM を殺さないことを確認 [実測]
 

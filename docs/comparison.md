@@ -39,7 +39,7 @@
 - 実行素性: GHA-hosted ≈ CodeBuild（9-15s E2E）> MicroVM CI（29-40s、VM 起動+終端の固定費 ~7-8s）
 - queue: 全基盤でほぼ 0（小 repo・低負荷）。CodeBuild は PROVISIONING 2-4s
 - 費用: 1 job あたりいずれもセント未満級。費用差より構築・保守の差が支配的
-- **MicroVM の価値は速度ではなく隔離**: untrusted PR コードを runner の権限・secret・実行環境から切り離せる。ただし GHA-hosted でも「権限を絞る」「secret を渡さない」「PR コードを checkout しない」設計にすれば同等の隔離に近づくため、MicroVM だけが唯一の手段ではない。採用判断は下記「採用条件」で行う [実測+推論]
+- **MicroVM の価値は速度ではなく隔離**: untrusted PR コードが runner/AWS権限/repo secret を一切見られない唯一の形 [実測+推論]
 
 ## 既存 CI で十分な採用条件（推奨基準）
 
@@ -56,16 +56,6 @@
 - repo secret / deploy 権限を持つ pipeline で、job 単位の強い隔離が必要
 
 本実装は後者を最小構成で実証した。フル CI プラットフォーム化（queueing、並列制御、image 更新、監査強化）はスコープ外。
-
-## 再検証（2026-11-01）
-
-2026-10-20 レビューの修正必須 3 件（終了判定・S3 結果検証・workflow の値埋め込み）を反映し、インフラを再構築して再検証した `[実測: experiments/EXP-007-reverify-20261101/]`。
-
-- pass/fail/timeout/OIDC 拒否/fork ゲート/sha 偽装の全経路で Check が期待どおり。pass/fail の summary は `resultBundle.verified=true` / `terminationVerified=true`。
-- 結果 bundle 不在・終了未確認は exit 2（成功にしない）を unit test で確認。
-- sweeper の `createdAt` 参照バグ（実際は `startedAt`）を発見・修正し、RUNNING VM を実際に終了させて `aliveVms=0` を確認。
-- 回帰テスト 24 件 OK。検証後は `scripts/teardown_k344.py` / `scripts/verify_clean.py` / `scripts/delstack_check.sh` で撤収・残存確認する。
-- 2026-11-01 の撤収結果: delstack で K-344 の CloudFormation スタック 0（`CDKToolkit` のみ保全）、`verify_clean.py` が `clean: true`（IAM/S3/MicroVM image/active VM/log group/CodeBuild/ECR/タグ付き資源が空）`[実測: experiments/EXP-007-reverify-20261101/evidence/teardown/]`
 
 ## 未確認項目（正直な残り）
 

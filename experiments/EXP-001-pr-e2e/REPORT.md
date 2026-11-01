@@ -31,7 +31,7 @@
 | PR#2 fail | run `39290180756` 29s → Check `run` = fail（`microvm-ci: failed` の check output 更新） |
 | Check 出力 | check-run `output.title`=`microvm-ci: succeeded`、summary に microvmId/timings/steps が入る（`evidence/run-*/microvm-ci-*/ci/check_summary.md`） |
 | VM job 部分の時間 | `total_s` 13.7s / 起動 3.85s / job 3.79s / terminate 3.49s（K-333 の 12.9–15.3s と同水準）[実測] |
-| OIDC claims | `evidence/oidc-claims.json`（2026-11-01 に gitignore 例外を追加してコミット）：`sub=repo:k-adachi-01@209649144/lambda-microvm-pr-ci@1425896105:pull_request`、`event_name=pull_request_target`、`ref=refs/heads/main`、`job_workflow_ref=…@refs/heads/main` |
+| OIDC claims | `evidence/oidc-claims.json`：`sub=repo:k-adachi-01@209649144/lambda-microvm-pr-ci@1425896105:pull_request`、`event_name=pull_request_target`、`ref=refs/heads/main`、`job_workflow_ref=…@refs/heads/main` |
 | trust 最小化後 | `ci_trust.json` を `sub ∈ {…:pull_request, …:ref:refs/heads/main}` に更新 → run `39290061667` も成功（pull_request_target context での認証は継続）[実測] |
 | schedule/dispatch 系 | sweeper run `39292121974` が成功（`:ref:refs/heads/main` sub で認証）[実測] |
 

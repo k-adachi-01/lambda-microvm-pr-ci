@@ -1,7 +1,0 @@
-{"t": 1793533142.169, "msg": "ci-agent-listening", "port": 8080}
-{"t": 1793534802.743, "msg": "http", "line": "code 400, message Bad request version (\"qa|\\x02%'n?y\u00ccmu\\x13K\\x13/\u00ba\")"}
-{"t": 1793534802.743, "msg": "http", "line": "\"\u0016\u0003\u0001\u0001\u0017\u0001\u0000\u0001\u0013\u0003\u0003\u00f50\u00c1f\u00d5\u0097\u00f4/\u008dJ\u00dc\u001a+\u00fa\u00f1\u00bf\u009b\u00f6\u0014'\u0013\u00d3\b\u00b13\u0011\u00d6\u0092\u00c1\u00a0\u00de3 qa|\u0002%'n?y\u00ccmu\u0013K\u0013/\u00ba\" 400 -"}
-{"t": 1793534802.744, "msg": "http", "line": "\"POST /job HTTP/1.1\" 202 -"}
-{"t": 1793534802.974, "msg": "job-finished", "status": "failed", "durationMs": 171}
-{"t": 1793534803.08, "msg": "http", "line": "\"GET /job/status HTTP/1.1\" 200 -"}
-{"t": 1793534803.411, "msg": "http", "line": "\"GET /job/result HTTP/1.1\" 200 -"}

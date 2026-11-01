@@ -25,8 +25,6 @@
 | 並走 PR（#3/#4/#5） | 各 PR が独立 job_id/VM を持ち干渉なし。`ServiceQuotaExceededException` が出た burst は EXP-004 で分離計測 |
 | VM 残存 | 全 run 完了後 `list-microvms` で k344-ci RUNNING=0（EXP-006） |
 
-各 run の summary/result/logs は `evidence/run-<id>/` に保存した。`39291975852` は run 全体としては cancelled だが、job 自体は完了しており artifact の summary は `succeeded` を示す（後行 run との dedup 判定は run conclusion で確認する）。
-
 注意点として `pending` 状態の run が `cancel-in-progress` で即時キャンセルされるのではなく、実行開始時点で旧 run をキャンセルする挙動を観測（run `39292268559` が約3.5分 pending の後に旧 run を cancelled）[実測] — GHA 側の runner 取得遅延が混ざると cancel 反映が遅れる。
 
 ## 解釈

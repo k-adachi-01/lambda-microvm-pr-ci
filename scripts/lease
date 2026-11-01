@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 # Run a command under the agent STS lease for the PoC Sandbox account.
-# Usage: scripts/lease -- <cmd>   |   eval "$(scripts/lease env)"
+# Usage: EXPERIMENT_ID=... EXPIRES_AT=... scripts/lease -- <cmd>
+#        EXPERIMENT_ID=... EXPIRES_AT=... eval "$(scripts/lease env)"
 set -euo pipefail
+: "${EXPERIMENT_ID:?set EXPERIMENT_ID (e.g. YYYYMMDD-k344-001)}"
+: "${EXPIRES_AT:?set EXPIRES_AT (YYYY-MM-DD)}"
 exec /Users/adachi/agent-skills/aws-sandbox-run/scripts/aws-agent-lease \
-  --experiment-id "${EXPERIMENT_ID:-20261101-k344-reverify-001}" \
-  --expires-at "${EXPIRES_AT:-2026-11-02}" \
+  --experiment-id "$EXPERIMENT_ID" \
+  --expires-at "$EXPIRES_AT" \
   "$@"

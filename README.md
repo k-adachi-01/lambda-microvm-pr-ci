@@ -39,18 +39,16 @@ PR event (pull_request_target)
 | `.github/workflows/gha-baseline.yml` | 比較用: 同一テストを GitHub-hosted runner で直接実行 |
 | `.github/workflows/microvm-ci-sweeper.yml` | 孤立 VM / 古い S3 オブジェクト掃討 |
 | `buildspec.yml` | 比較用: 同一テストの CodeBuild 定義 |
-| `scripts/` | lease、イメージ build、stale 掃討 |
+| `scripts/` | lease、イメージ build、stale 掃討、撤収・残存確認 |
 | `experiments/EXP-*/` | 実験記録（REPORT.md + evidence/） |
 
 ## セットアップ（人の権限で1回）
 
-検証用の再構築（2026-11-01）では `AWS_PROFILE=aws-poc-sandbox`、experiment-id `20261101-k344-reverify-001`、expires-at `2026-11-02` を使った。検証後は同リポジトリの teardown 手順で全資源を削除する。
-
 ```bash
 # OIDC trust/role/bucket（人の SSO。agent-lease には iam:*OIDC* が無い）
+export EXPERIMENT_ID=YYYYMMDD-k344-001
+export EXPIRES_AT=YYYY-MM-DD
 export AWS_PROFILE=aws-poc-sandbox
-export EXPERIMENT_ID=20261101-k344-reverify-001
-export EXPIRES_AT=2026-11-02
 /Users/adachi/agent-skills/aws-sandbox-run/scripts/aws-sandbox-run \
   --experiment-id "$EXPERIMENT_ID" --expires-at "$EXPIRES_AT" -- infra/deploy.sh
 
@@ -75,12 +73,11 @@ uv run python -m unittest discover -s tests -v
 ### 撤収と残存確認
 
 ```bash
-# K-344 の S3 / IAM / MicroVM image / log group を削除
-AWS_PROFILE=aws-poc-sandbox uv run python scripts/teardown_k344.py --apply \
-  --out out/teardown/teardown.json
+# K-344 の S3 / IAM / MicroVM image / log group / CodeBuild を削除
+AWS_PROFILE=aws-poc-sandbox uv run python scripts/teardown_k344.py --apply
 
 # CloudFormation は delstack、直接 API の資源は verify_clean で確認
-AWS_PROFILE=aws-poc-sandbox scripts/delstack_check.sh | tee out/teardown/delstack.log
+AWS_PROFILE=aws-poc-sandbox scripts/delstack_check.sh
 AWS_PROFILE=aws-poc-sandbox uv run python scripts/verify_clean.py \
   --experiment-id "$EXPERIMENT_ID" --out out/teardown/verify-clean.json
 ```
@@ -123,4 +120,3 @@ experiments/EXP-*/REPORT.md に実測を記録する（AGENTS.md の証拠区分
 - バーストの支配的失敗は `ServiceQuotaExceededException`（同時メモリ 8GiB 枠）— retryable 化済
 - 比較: GHA-hosted 5-15s / CodeBuild 9-11.5s / MicroVM CI 29-40s E2E、queue≈0
 - 注意: 検証中 private repo で hosted runner 課金障害が起き、repo を public 化して回避した（機微情報なし設計）
-- 2026-11-01 再検証: レビュー指摘 3 件の修正、fail-closed 化、sweeper の `startedAt` バグ修正、回帰テスト 24 件、再構築した環境での pass/fail/timeout/OIDC 拒否/fork ゲート/sha 偽装を確認。詳細は [experiments/EXP-007-reverify-20261101/REPORT.md](experiments/EXP-007-reverify-20261101/REPORT.md) `[実測]`

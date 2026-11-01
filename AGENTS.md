@@ -28,9 +28,9 @@ experiments/EXP-NNN-*/REPORT.md は以下の節を持つ:
 ## 安全上の制約
 
 - 攻撃シミュレーション（cred 探索・メタデータアクセス・workflow 改ざん）は自分のリポジトリ・自分の sandbox アカウント内のダミー資源のみを対象にする
-- AWS 操作はセットアップ（OIDC/role 初期設定）のみ `aws-sandbox-run`（人の SSO: `aws-poc-sandbox`）。実行時検証は `scripts/lease`（aws-agent-lease、experiment-id `20261101-k344-reverify-001`、expires-at `2026-11-02`）経由。対象は PoC Sandbox / `ap-northeast-1`
-- 検証後は `scripts/teardown_k344.py --apply` で K-344 の資源を削除し、`scripts/delstack_check.sh`（CloudFormation）と `scripts/verify_clean.py`（直接 API の資源）で残存ゼロを確認する。検証用に再構築した環境は残さない。
+- AWS 操作はセットアップ（OIDC/role 初期設定）のみ `aws-sandbox-run`（人の SSO: `aws-poc-sandbox`）。実行時検証は `scripts/lease`（aws-agent-lease、`EXPERIMENT_ID` / `EXPIRES_AT` を環境変数で指定）経由。対象は PoC Sandbox / `ap-northeast-1`
 - VM は終了前に結果を回収し、`finally` 相当で terminate する。残存は `scripts/cleanup_stale.py` / `aws lambda-microvms list-microvms` で確認する
+- 検証後は `scripts/teardown_k344.py --apply` で K-344 の資源を削除し、`scripts/delstack_check.sh`（CloudFormation）と `scripts/verify_clean.py`（直接 API の資源）で残存ゼロを確認する。検証用に再構築した環境は残さない。
 
 ## ツール
 
