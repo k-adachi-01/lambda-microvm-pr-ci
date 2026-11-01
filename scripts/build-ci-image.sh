@@ -29,7 +29,7 @@ for i in $(seq 1 120); do
   state=$(aws lambda-microvms get-microvm-image --image-identifier "$IMAGE_ARN" --region "$REGION" --query 'state' --output text)
   echo "  [$i] state=$state"
   case "$state" in
-    ACTIVE|CREATED) break ;;
+    ACTIVE|CREATED|UPDATED) break ;;
     FAILED) aws lambda-microvms get-microvm-image --image-identifier "$IMAGE_ARN" --region "$REGION"; exit 1 ;;
   esac
   sleep 15
