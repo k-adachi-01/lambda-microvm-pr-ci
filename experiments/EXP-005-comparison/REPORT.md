@@ -46,7 +46,7 @@
 
 ## 解釈
 
-- 素の速度では GHA-hosted ≈ CodeBuild > MicroVM（起動+終端の固定費 ~7-8s）。MicroVM の価値は速度ではなく**隔離**: untrusted コードが runner/AWS権限/repo secret に触れない唯一の形 [実測+推論]
+- 素の速度では GHA-hosted ≈ CodeBuild > MicroVM（起動+終端の固定費 ~7-8s）。MicroVM の価値は速度ではなく**隔離**: untrusted コードを runner の権限・secret・実行環境から切り離せる。ただし GHA-hosted でも権限・secret・checkout の設計次第で同等の隔離に近づくため、唯一の手段ではない [実測+推論]
 - 費用は 1 job あたりいずれもセント未満〜数セント級で、構築・保守の差の方が支配的。MicroVM は「専用イメージ+オーケストレータ」の固定コストが高い [推論]
 
 ## 限界と残る疑問

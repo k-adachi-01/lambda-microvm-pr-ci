@@ -29,6 +29,7 @@ jobs:
           aws-region: ap-northeast-1
       - name: Sweep stale MicroVMs + S3 objects
         run: |
+          set -o pipefail
           mkdir -p out/sweeper
           uv run python scripts/cleanup_stale.py \
             --bucket "${{ vars.ARTIFACT_BUCKET }}" \

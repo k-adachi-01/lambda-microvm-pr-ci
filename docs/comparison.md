@@ -39,7 +39,7 @@
 - 実行素性: GHA-hosted ≈ CodeBuild（9-15s E2E）> MicroVM CI（29-40s、VM 起動+終端の固定費 ~7-8s）
 - queue: 全基盤でほぼ 0（小 repo・低負荷）。CodeBuild は PROVISIONING 2-4s
 - 費用: 1 job あたりいずれもセント未満級。費用差より構築・保守の差が支配的
-- **MicroVM の価値は速度ではなく隔離**: untrusted PR コードが runner/AWS権限/repo secret を一切見られない唯一の形 [実測+推論]
+- **MicroVM の価値は速度ではなく隔離**: untrusted PR コードを runner の権限・secret・実行環境から切り離せる。ただし GHA-hosted でも「権限を絞る」「secret を渡さない」「PR コードを checkout しない」設計にすれば同等の隔離に近づくため、MicroVM だけが唯一の手段ではない。採用判断は下記「採用条件」で行う [実測+推論]
 
 ## 既存 CI で十分な採用条件（推奨基準）
 

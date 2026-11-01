@@ -16,8 +16,10 @@ from datetime import datetime, timedelta, timezone
 
 import boto3
 from botocore.config import Config
+from botocore.exceptions import ClientError
 
 REGION = "ap-northeast-1"
+NOT_FOUND_CODES = {"ResourceNotFoundException", "ResourceNotFound", "NotFound"}
 
 
 def main() -> int:
@@ -58,10 +60,23 @@ def main() -> int:
                     try:
                         vm.terminate_microvm(microvmIdentifier=mid)
                         rec["action"] = "terminated"
+                        rec["stateAfter"] = "TERMINATED"
+                    except ClientError as exc:
+                        code = exc.response.get("Error", {}).get("Code")
+                        if code in NOT_FOUND_CODES:
+                            rec["action"] = "already-gone"
+                            rec["stateAfter"] = "TERMINATED"
+                        else:
+                            rec["action"] = f"terminate-error: {code}"
+                            rec["stateAfter"] = state
                     except Exception as exc:  # noqa: BLE001
                         rec["action"] = f"terminate-error: {exc}"
+                        rec["stateAfter"] = state
                 else:
                     rec["action"] = "would-terminate"
+                    rec["stateAfter"] = state
+            else:
+                rec["stateAfter"] = state
             out["vms"].append(rec)
 
     # --- stale S3 objects ---------------------------------------------------
@@ -74,7 +89,9 @@ def main() -> int:
                     s3.delete_object(Bucket=args.bucket, Key=o["Key"])
                 out["s3Deleted"] += 1
 
-    alive = [v for v in out["vms"] if v["state"] != "TERMINATED"]
+    # Report post-action state, not the pre-action snapshot: a VM we just
+    # terminated must not be counted as still alive.
+    alive = [v for v in out["vms"] if v.get("stateAfter", v["state"]) != "TERMINATED"]
     out["aliveVms"] = len(alive)
     print(json.dumps(out, indent=2, sort_keys=True))
     return 1 if alive else 0

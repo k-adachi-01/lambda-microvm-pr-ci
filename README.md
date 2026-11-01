@@ -44,10 +44,15 @@ PR event (pull_request_target)
 
 ## セットアップ（人の権限で1回）
 
+検証用の再構築（2026-11-01）では `AWS_PROFILE=aws-poc-sandbox`、experiment-id `20261101-k344-reverify-001`、expires-at `2026-11-02` を使った。検証後は同リポジトリの teardown 手順で全資源を削除する。
+
 ```bash
 # OIDC trust/role/bucket（人の SSO。agent-lease には iam:*OIDC* が無い）
+export AWS_PROFILE=aws-poc-sandbox
+export EXPERIMENT_ID=20261101-k344-reverify-001
+export EXPIRES_AT=2026-11-02
 /Users/adachi/agent-skills/aws-sandbox-run/scripts/aws-sandbox-run \
-  --experiment-id 20261020-k344-001 --expires-at 2026-10-22 -- infra/deploy.sh
+  --experiment-id "$EXPERIMENT_ID" --expires-at "$EXPIRES_AT" -- infra/deploy.sh
 
 # CI イメージ build（agent lease で可）
 scripts/lease -- scripts/build-ci-image.sh
@@ -57,6 +62,30 @@ gh variable set MICROVM_CI_ROLE_ARN -b"$(grep CI_ROLE_ARN infra/outputs.env | cu
 gh variable set ARTIFACT_BUCKET   -b"$(grep ARTIFACT_BUCKET infra/outputs.env | cut -d= -f2)"
 gh variable set CI_IMAGE_ARN      -b"arn:aws:lambda:ap-northeast-1:$(grep ACCOUNT infra/outputs.env | cut -d= -f2):microvm-image:k344-ci"
 ```
+
+### 回帰テスト
+
+オーケストレータの fail-closed 検証は `tests/`（VM 内で走る被験プロジェクト）とは分離してある:
+
+```bash
+uv run python -m unittest discover -s ci/tests -v
+uv run python -m unittest discover -s tests -v
+```
+
+### 撤収と残存確認
+
+```bash
+# K-344 の S3 / IAM / MicroVM image / log group を削除
+AWS_PROFILE=aws-poc-sandbox uv run python scripts/teardown_k344.py --apply \
+  --out out/teardown/teardown.json
+
+# CloudFormation は delstack、直接 API の資源は verify_clean で確認
+AWS_PROFILE=aws-poc-sandbox scripts/delstack_check.sh | tee out/teardown/delstack.log
+AWS_PROFILE=aws-poc-sandbox uv run python scripts/verify_clean.py \
+  --experiment-id "$EXPERIMENT_ID" --out out/teardown/verify-clean.json
+```
+
+`verify_clean.py` が `clean: true` を返し、`delstack_check.sh` が K-344 の CloudFormation スタックなしを報告した状態を「残存ゼロ」とする。
 
 ## 実験用 workflow_dispatch 入力
 

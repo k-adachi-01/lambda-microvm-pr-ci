@@ -13,7 +13,9 @@ or a local aws-agent-lease session):
   7. terminate the MicroVM in a finally block; verify TERMINATED
      (SIGTERM/SIGINT also funnel through the finally so runner cancel = cleanup)
 
-Exit code: 0 = job succeeded, 1 = job ran but failed, 2 = infra/protocol error.
+Exit code: 0 = job succeeded and its result bundle (and VM termination, when
+this process created the VM) were verified; 1 = job ran but failed;
+2 = infra/protocol error, including unverified result/cleanup.
 """
 from __future__ import annotations
 
@@ -47,6 +49,11 @@ THROTTLE_CODES = {
     # bounded retry is the right behaviour for CI bursts.
     "ServiceQuotaExceededException",
 }
+
+# Only these API responses prove that a MicroVM no longer exists. Every other
+# error (AccessDenied, throttling, timeout) is an unverified cleanup, not a
+# successful one.
+NOT_FOUND_CODES = {"ResourceNotFoundException", "ResourceNotFound", "NotFound"}
 
 
 def connector(region: str, name: str) -> str:
@@ -154,22 +161,72 @@ def wait_running(vm, microvm_id: str, timeout: int) -> dict:
     raise TimeoutError("VM did not reach RUNNING")
 
 
-def wait_terminated(vm, microvm_id: str, timeout: int = 120) -> str:
+def is_not_found(exc: ClientError) -> bool:
+    return exc.response.get("Error", {}).get("Code") in NOT_FOUND_CODES
+
+
+def wait_terminated(vm, microvm_id: str, timeout: int = 120) -> tuple[str, bool]:
+    """Return (observed_state, verified).
+
+    verified is True only when the VM is observed TERMINATED or the API says
+    it does not exist. AccessDenied, throttling, and timeouts are reported as
+    unverified so the job cannot turn a failed cleanup into a green check.
+    """
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         try:
             state = vm.get_microvm(microvmIdentifier=microvm_id)["state"]
-        except Exception as exc:  # noqa: BLE001 - NotFound means gone
-            return f"gone ({exc.__class__.__name__})"
+        except ClientError as exc:
+            if is_not_found(exc):
+                return "gone (ResourceNotFoundException)", True
+            code = exc.response.get("Error", {}).get("Code", exc.__class__.__name__)
+            return f"unverified ({code})", False
+        except Exception as exc:  # noqa: BLE001 - non-API failures are unverified
+            return f"unverified ({exc.__class__.__name__})", False
         if state == "TERMINATED":
-            return state
+            return state, True
         time.sleep(3)
-    return "still-not-TERMINATED"
+    return "still-not-TERMINATED", False
+
+
+def verify_result_bundle(s3, bucket: str, key: str) -> dict:
+    """Confirm the guest's result bundle landed in S3.
+
+    A missing or empty bundle must never be reported as a successful job: the
+    guest can report status=succeeded while its upload failed.
+    """
+    try:
+        head = s3.head_object(Bucket=bucket, Key=key)
+    except Exception as exc:  # noqa: BLE001 - any failure means unverified
+        return {"key": key, "verified": False, "error": f"{exc.__class__.__name__}: {exc}"}
+    size = int(head.get("ContentLength", 0))
+    if size <= 0:
+        return {"key": key, "verified": False, "error": "result bundle is empty"}
+    return {"key": key, "verified": True, "bytes": size}
+
+
+def determine_exit_code(summary: dict) -> int:
+    """0 only when the job succeeded AND its evidence was verified."""
+    if summary.get("jobStatus") == "succeeded":
+        if not (summary.get("resultBundle") or {}).get("verified"):
+            return 2
+        if summary.get("createdVm") and not summary.get("terminationVerified"):
+            return 2
+        return 0
+    if summary.get("jobStatus") in ("failed", "error"):
+        return 1
+    return 2
 
 
 def write_check_summary(out_dir: Path, summary: dict, result: dict | None) -> None:
     """Emit a compact markdown body used to update the GitHub Check run output."""
     meta = summary.get("metadata", {})
+    bundle = summary.get("resultBundle") or {}
+    bundle_state = "verified" if bundle.get("verified") else "**NOT VERIFIED**"
+    if summary.get("createdVm"):
+        termination_state = "verified" if summary.get("terminationVerified") else "**NOT VERIFIED**"
+    else:
+        termination_state = "n/a (reused VM)"
     lines = [
         f"### disposable microVM CI — `{summary.get('jobStatus', 'unknown')}`",
         "",
@@ -181,6 +238,8 @@ def write_check_summary(out_dir: Path, summary: dict, result: dict | None) -> No
         f"| head SHA | `{meta.get('head_sha', 'n/a')}` |",
         f"| run | `{meta.get('run_id', 'n/a')}` attempt `{meta.get('run_attempt', 'n/a')}` |",
         f"| artifact sha256 | `{summary.get('sha256', 'n/a')[:16]}…` |",
+        f"| result bundle | {bundle_state} |",
+        f"| VM termination | {termination_state} |",
     ]
     t = summary.get("timings", {})
     if t:
@@ -278,6 +337,7 @@ def main() -> int:
         "artifactBytes": len(payload),
         "artifactKey": artifact_key,
         "metadata": metadata,
+        "createdVm": False,
     }
     result: dict | None = None
     try:
@@ -303,6 +363,7 @@ def main() -> int:
             summary["runMicrovmAttempts"] = attempts_log
             microvm_id = resp["microvmId"]
             created = True
+            summary["createdVm"] = True
             item = wait_running(vm, microvm_id, timeout=300)
             timings["vm_launch_s"] = round(time.monotonic() - t0, 3)
         else:
@@ -353,11 +414,7 @@ def main() -> int:
             (out_dir / "logs.txt").write_bytes(logs)
         except Exception as exc:  # noqa: BLE001
             (out_dir / "logs.fetch-error.txt").write_text(str(exc))
-        try:
-            head = s3.head_object(Bucket=args.bucket, Key=result_key)
-            summary["resultBundle"] = {"key": result_key, "bytes": head["ContentLength"]}
-        except Exception as exc:  # noqa: BLE001
-            summary["resultBundle"] = {"key": result_key, "error": str(exc)}
+        summary["resultBundle"] = verify_result_bundle(s3, args.bucket, result_key)
         timings["fetch_s"] = round(time.monotonic() - t0, 3)
         summary["jobStatus"] = status
     finally:
@@ -368,21 +425,24 @@ def main() -> int:
                 vm.terminate_microvm(microvmIdentifier=microvm_id)
             except Exception as exc:  # noqa: BLE001
                 summary["terminateError"] = str(exc)
-            summary["terminatedAs"] = wait_terminated(vm, microvm_id)
+            terminated_as, termination_verified = wait_terminated(vm, microvm_id)
+            summary["terminatedAs"] = terminated_as
+            summary["terminationVerified"] = termination_verified
             timings["terminate_s"] = round(time.monotonic() - t0, 3)
 
     timings["total_s"] = round(time.monotonic() - t_all, 3)
     summary["timings"] = timings
     summary["outDir"] = str(out_dir)
+    exit_code = determine_exit_code(summary)
+    # Distinguish a genuine test failure (1) from a green guest status whose
+    # evidence could not be verified (2) in the Check output title.
+    summary["verificationStatus"] = (
+        "unverified" if exit_code == 2 and summary.get("jobStatus") == "succeeded" else "ok"
+    )
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True))
     write_check_summary(out_dir, summary, result)
     print(json.dumps(summary, indent=2, sort_keys=True))
-
-    if summary.get("jobStatus") == "succeeded":
-        return 0
-    if summary.get("jobStatus") in ("failed", "error"):
-        return 1
-    return 2
+    return exit_code
 
 
 if __name__ == "__main__":

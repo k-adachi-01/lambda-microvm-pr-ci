@@ -3,6 +3,6 @@
 # Usage: scripts/lease -- <cmd>   |   eval "$(scripts/lease env)"
 set -euo pipefail
 exec /Users/adachi/agent-skills/aws-sandbox-run/scripts/aws-agent-lease \
-  --experiment-id "${EXPERIMENT_ID:-20261020-k344-001}" \
-  --expires-at "${EXPIRES_AT:-2026-10-22}" \
+  --experiment-id "${EXPERIMENT_ID:-20261101-k344-reverify-001}" \
+  --expires-at "${EXPIRES_AT:-2026-11-02}" \
   "$@"

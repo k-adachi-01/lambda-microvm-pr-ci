@@ -78,14 +78,19 @@ jobs:
         id: gate
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          IS_FORK: ${{ github.event.pull_request.head.repo.fork }}
+          LABELS_JSON: ${{ toJSON(github.event.pull_request.labels.*.name) }}
+          SIMULATE_FORK_GATE: ${{ inputs.simulate_fork_gate }}
         run: |
           set -euo pipefail
-          is_fork='${{ github.event.pull_request.head.repo.fork }}'
-          labels='${{ toJSON(github.event.pull_request.labels.*.name) }}'
-          echo "fork=${is_fork} labels=${labels} head=$HEAD_SHA"
-          if [ "${{ inputs.simulate_fork_gate }}" = "true" ] || \
-             { [ "${{ github.event_name }}" = "pull_request_target" ] && [ "$is_fork" = "true" ] \
-               && ! echo "$labels" | grep -q 'microvm-ci-ok'; }; then
+          echo "fork=${IS_FORK} labels=${LABELS_JSON} head=${HEAD_SHA}"
+          # Event values reach the shell only through env vars, never through
+          # direct ${{ }} interpolation. Label names are compared as JSON, not
+          # as a shell string, so a quote in a label cannot break the script.
+          if [ "$SIMULATE_FORK_GATE" = "true" ] || \
+             { [ "$EVENT_NAME" = "pull_request_target" ] && [ "$IS_FORK" = "true" ] \
+               && ! printf '%s' "$LABELS_JSON" | jq -e 'index("microvm-ci-ok")' >/dev/null; }; then
             echo "fork PR without maintainer label microvm-ci-ok — posting neutral check"
             gh api repos/$GITHUB_REPOSITORY/check-runs -X POST \
               -f name=microvm-ci -f head_sha="$HEAD_SHA" -f status=completed \
@@ -111,16 +116,20 @@ jobs:
 
       - name: Download PR head tarball (inert bytes — never executed here)
         if: steps.gate.outputs.gated != 'true'
-        run: gh api "repos/$GITHUB_REPOSITORY/tarball/$HEAD_SHA" > head.tgz && ls -l head.tgz
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Fork PR commits do not exist in the base repository, so the archive
+          # must be requested from the head repository. The bytes remain inert.
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+        run: gh api "repos/$HEAD_REPO/tarball/$HEAD_SHA" > head.tgz && ls -l head.tgz
 
       - name: Record OIDC token claims (evidence for trust minimisation)
         if: steps.gate.outputs.gated != 'true'
         run: |
+          mkdir -p out
           tok=$(curl -sf -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
             "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r .value)
-          python3 -c 'import base64,json,sys; p=sys.stdin.read().strip().split(".")[1]; p+="="*(-len(p)%4); print(json.dumps(json.loads(base64.urlsafe_b64decode(p)),indent=2,sort_keys=True))' <<<"$tok" | tee oidc-claims.json
+          python3 -c 'import base64,json,sys; p=sys.stdin.read().strip().split(".")[1]; p+="="*(-len(p)%4); print(json.dumps(json.loads(base64.urlsafe_b64decode(p)),indent=2,sort_keys=True))' <<<"$tok" | tee oidc-claims.json out/oidc-claims.json
 
       - name: Configure AWS credentials (OIDC)
         if: steps.gate.outputs.gated != 'true'
@@ -138,16 +147,21 @@ jobs:
       - name: Run CI job on a fresh MicroVM
         if: steps.gate.outputs.gated != 'true'
         id: job
+        env:
+          ARTIFACT_BUCKET: ${{ vars.ARTIFACT_BUCKET }}
+          CI_IMAGE_ARN: ${{ vars.CI_IMAGE_ARN }}
+          TAMPER_SHA: ${{ inputs.tamper_sha }}
+          BOTO_MAX_ATTEMPTS: ${{ inputs.boto_max_attempts || '4' }}
         run: |
           set -o pipefail
           mkdir -p out/ci
           EXTRA=()
-          if [ "${{ inputs.tamper_sha }}" = "true" ]; then
+          if [ "$TAMPER_SHA" = "true" ]; then
             EXTRA+=(--artifact-sha256 "0000000000000000000000000000000000000000000000000000000000000000")
           fi
           uv run python ci/orchestrator/ci_job.py \
-            --bucket "${{ vars.ARTIFACT_BUCKET }}" \
-            --image-identifier "${{ vars.CI_IMAGE_ARN }}" \
+            --bucket "$ARTIFACT_BUCKET" \
+            --image-identifier "$CI_IMAGE_ARN" \
             --source-tarball head.tgz --strip-components 1 \
             --job-id "pr${PR_NUMBER}-r${GITHUB_RUN_ID}-a${GITHUB_RUN_ATTEMPT}" \
             --key-prefix "ci/pr-${PR_NUMBER}/${HEAD_SHA:0:12}" \
@@ -157,7 +171,7 @@ jobs:
             --step "python3 -m compileall src -q" \
             --step "python3 -m unittest discover -s tests -v" \
             --job-timeout-seconds "$JOB_TIMEOUT_SECONDS" \
-            --boto-max-attempts "${{ inputs.boto_max_attempts || '4' }}" \
+            --boto-max-attempts "$BOTO_MAX_ATTEMPTS" \
             "${EXTRA[@]}" \
             --out-dir out/ci 2>&1 | tee out/job-stdout.txt
           exit ${PIPESTATUS[0]}
@@ -171,7 +185,10 @@ jobs:
           cr=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/attempts/$GITHUB_RUN_ATTEMPT/jobs" \
                 --jq '.jobs[] | select(.name=="run") | .check_run_url' | head -1)
           [ -z "$cr" ] && { echo "no check run url"; exit 0; }
-          title=$(jq -r '.jobStatus // "no-status"' out/ci/summary.json 2>/dev/null)
+          if [ -f out/ci/summary.json ]; then
+            title=$(jq -r 'if .verificationStatus == "unverified" then "unverified" else (.jobStatus // "no-status") end' out/ci/summary.json 2>/dev/null)
+          fi
+          title=${title:-no-status}
           body=$(cat out/ci/check_summary.md 2>/dev/null || echo "no summary produced")
           gh api "$cr" -X PATCH \
             -f "output[title]=microvm-ci: ${title}" \
@@ -189,7 +206,8 @@ jobs:
 
       - name: Conclude from orchestrator outcome
         if: always() && steps.gate.outputs.gated != 'true'
+        env:
+          OUTCOME: ${{ steps.job.outcome }}
         run: |
-          outcome="${{ steps.job.outcome }}"
-          echo "orchestrator outcome: ${outcome}"
-          [ "$outcome" = "success" ]
+          echo "orchestrator outcome: ${OUTCOME}"
+          [ "$OUTCOME" = "success" ]
