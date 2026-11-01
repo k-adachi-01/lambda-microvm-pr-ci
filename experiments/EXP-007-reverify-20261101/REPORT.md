@@ -86,5 +86,7 @@ pass/fail/timeout/tamper の全 run で `resultBundle.verified=true`、`terminat
 
 - 実 fork PR の E2E は引き続き未確認（単一アカウントで自 repo fork を作れない）。tarball URL を head repo に変更したが、実イベントでは未検証 `[未確認]`。
 - 結果 bundle 不在・終了 AccessDenied の E2E 注入は行っていない。unit test で exit 2 を確認したのみ `[未確認: E2E]`。
+- `build-ci-image.sh` の `UPDATED` 待ち修正は、修正前に観測した `state=UPDATED` に基づくコード修正であり、修正後の再ビルドは行っていない（image 自体は version 2.0 の build 成功を確認済み）。
+- 旧比較用 CodeBuild project `k344-prci-compare` は初回の撤収スクリプトでは拾えず、個別に削除した。`teardown_k344.py` に CodeBuild 削除を追加済みだが、その追加コード自体は今回の実行では未使用（手動削除で確認）。
 - 並行度・quota の再測は行っていない（小サンプル） `[未確認]`。
 - 検証後の撤収結果は `evidence/teardown/` と `evidence/verify-clean.json` を参照。
