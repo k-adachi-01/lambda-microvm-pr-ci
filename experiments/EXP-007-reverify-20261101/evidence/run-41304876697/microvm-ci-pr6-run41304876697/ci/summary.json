@@ -1,0 +1,41 @@
+{
+  "artifactBytes": 50869,
+  "artifactKey": "ci/pr-6/7f75327cd8ae/pr6-r41304876697-a1/artifact.tar.gz",
+  "createdVm": true,
+  "jobId": "pr6-r41304876697-a1",
+  "jobStatus": "failed",
+  "metadata": {
+    "event": "workflow_dispatch",
+    "head_sha": "7f75327cd8ae33e39747a6b6b390c658d201b86b",
+    "pr": "6",
+    "run_attempt": "1",
+    "run_id": "41304876697"
+  },
+  "microvmId": "microvm-8d7e04b6-1015-3e58-8d1b-bbd6aba311e0",
+  "outDir": "out/ci",
+  "resultBundle": {
+    "bytes": 404,
+    "key": "ci/pr-6/7f75327cd8ae/pr6-r41304876697-a1/result.bundle.tar.gz",
+    "verified": true
+  },
+  "runMicrovmAttempts": [
+    {
+      "attempt": 1,
+      "ms": 501,
+      "ok": true
+    }
+  ],
+  "sha256": "03d58ee33125a03873c05d0df1c7ea8e33c2051b57236c16210333060762c424",
+  "terminatedAs": "TERMINATED",
+  "terminationVerified": true,
+  "timings": {
+    "fetch_s": 0.78,
+    "job_s": 0.336,
+    "package_upload_s": 0.764,
+    "submit_s": 0.555,
+    "terminate_s": 3.481,
+    "total_s": 9.855,
+    "vm_launch_s": 3.842
+  },
+  "verificationStatus": "ok"
+}

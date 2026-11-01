@@ -52,6 +52,8 @@ def main() -> int:
     vm = session.client("lambda-microvms")
     logs = session.client("logs")
     cfn = session.client("cloudformation")
+    codebuild = session.client("codebuild")
+    ecr = session.client("ecr")
 
     roles = [
         r["RoleName"]
@@ -75,6 +77,23 @@ def main() -> int:
         for g in logs.describe_log_groups(
             logGroupNamePrefix=f"/aws/lambda-microvms/{IMAGE_NAME}"
         ).get("logGroups", [])
+    ]
+    log_groups += [
+        g["logGroupName"]
+        for g in logs.describe_log_groups(
+            logGroupNamePrefix="/aws/codebuild/k344-prci"
+        ).get("logGroups", [])
+    ]
+    projects = [
+        p for p in codebuild.list_projects().get("projects", []) if p.startswith("k344")
+    ]
+    repositories = [
+        r["repositoryName"]
+        for r in ecr.describe_repositories().get("repositories", [])
+        if "k344" in r["repositoryName"]
+    ]
+    buckets = [
+        b["Name"] for b in s3.list_buckets().get("Buckets", []) if "k344" in b["Name"]
     ]
     stacks = [
         {"name": s["StackName"], "status": s["StackStatus"]}
@@ -109,6 +128,9 @@ def main() -> int:
             for v in active_vms
         ],
         "logGroups": log_groups,
+        "codebuildProjects": projects,
+        "ecrRepositories": repositories,
+        "s3BucketsMatchingK344": buckets,
         "cloudformationStacks": stacks,
         "taggedResources": tagged,
     }
@@ -118,6 +140,9 @@ def main() -> int:
         and not images
         and not active_vms
         and not log_groups
+        and not projects
+        and not repositories
+        and not buckets
         and not stacks
         and not tagged
     )

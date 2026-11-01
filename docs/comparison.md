@@ -57,6 +57,16 @@
 
 本実装は後者を最小構成で実証した。フル CI プラットフォーム化（queueing、並列制御、image 更新、監査強化）はスコープ外。
 
+## 再検証（2026-11-01）
+
+2026-10-20 レビューの修正必須 3 件（終了判定・S3 結果検証・workflow の値埋め込み）を反映し、インフラを再構築して再検証した `[実測: experiments/EXP-007-reverify-20261101/]`。
+
+- pass/fail/timeout/OIDC 拒否/fork ゲート/sha 偽装の全経路で Check が期待どおり。pass/fail の summary は `resultBundle.verified=true` / `terminationVerified=true`。
+- 結果 bundle 不在・終了未確認は exit 2（成功にしない）を unit test で確認。
+- sweeper の `createdAt` 参照バグ（実際は `startedAt`）を発見・修正し、RUNNING VM を実際に終了させて `aliveVms=0` を確認。
+- 回帰テスト 24 件 OK。検証後は `scripts/teardown_k344.py` / `scripts/verify_clean.py` / `scripts/delstack_check.sh` で撤収・残存確認する。
+- 2026-11-01 の撤収結果: delstack で K-344 の CloudFormation スタック 0（`CDKToolkit` のみ保全）、`verify_clean.py` が `clean: true`（IAM/S3/MicroVM image/active VM/log group/CodeBuild/ECR/タグ付き資源が空）`[実測: experiments/EXP-007-reverify-20261101/evidence/teardown/]`
+
 ## 未確認項目（正直な残り）
 
 - 実 fork PR の gate E2E（単一アカウント制約）[未確認]

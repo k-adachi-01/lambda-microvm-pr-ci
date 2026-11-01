@@ -25,7 +25,7 @@
 |---|---|
 | workflow 改ざん | run `39290342885` の step 一覧に `EVIL exfiltrate` step は存在せず。job_workflow_ref=`…/microvm-ci.yml@refs/heads/main`（EXP-001 claims）[実測] |
 | ゲスト cred 探索 | VM 内ログ: `test_no_aws_env ok` / `test_no_imds ok` / `test_no_metadata_on_169254170253 ok` / `test_no_process_environ_leak ok` / `test_no_aws_config_files ok`。9 tests OK（`evidence/run-39290342885/…/logs.txt`）[実測] |
-| fork ゲート | `simulate_fork_gate` run `39293193999`: neutral check-run（conclusion=neutral, title=`not run — fork requires label`）を GITHUB_TOKEN で POST 成功 → early exit、VM 未起動 [実測] |
+| fork ゲート | `simulate_fork_gate` run `39293193999`: neutral check-run（conclusion=neutral, title=`not run — fork requires label`）を GITHUB_TOKEN で POST 成功 → early exit、VM 未起動 [実測: `evidence/run-39293193999/neutral-check.json`, `run.log`] |
 | runner 側不実行 | runner は head tarball を `gh api tarball` でバイト取得するのみ（checkout/実行なし）。改ざん workflow・悪意テストは runner では一度も実行されていない [実測/設計] |
 
 ## 解釈

@@ -1,0 +1,39 @@
+run	Configure AWS credentials (OIDC)	﻿2026-11-01T12:03:26.2784110Z ##[group]Run aws-actions/configure-aws-credentials@v4
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:26.2784481Z with:
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:26.2784779Z   role-to-assume: arn:aws:iam::155936382172:role/k344-prci-build-role
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:26.2785158Z   aws-region: ap-northeast-1
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:26.2785418Z   audience: sts.amazonaws.com
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:26.2785677Z   output-env-credentials: true
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:26.2785923Z env:
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:26.2786113Z   AWS_REGION: ap-northeast-1
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:26.2786349Z   JOB_TIMEOUT_SECONDS: 300
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:26.2786820Z   HEAD_SHA: 7f75327cd8ae33e39747a6b6b390c658d201b86b
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:26.2787111Z   PR_NUMBER: 6
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:26.2787303Z ##[endgroup]
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:26.5938116Z Assuming role with OIDC
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:27.0760909Z Assuming role with OIDC
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:27.2534017Z Assuming role with OIDC
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:27.5358112Z Assuming role with OIDC
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:27.7640004Z Assuming role with OIDC
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:28.2855888Z Assuming role with OIDC
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:29.9347556Z Assuming role with OIDC
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:32.4297145Z Assuming role with OIDC
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:34.8929072Z Assuming role with OIDC
+run	Configure AWS credentials (OIDC)	2026-11-01T12:03:40.1772285Z Assuming role with OIDC
+run	Configure AWS credentials (OIDC)	2026-11-01T12:04:01.7357934Z Assuming role with OIDC
+run	Configure AWS credentials (OIDC)	2026-11-01T12:04:13.8426249Z Assuming role with OIDC
+run	Configure AWS credentials (OIDC)	2026-11-01T12:05:40.3329875Z ##[error]Could not assume role with OIDC: Not authorized to perform sts:AssumeRoleWithWebIdentity
+run	Conclude from orchestrator outcome	﻿2026-11-01T12:05:42.3103685Z ##[group]Run echo "orchestrator outcome: ${OUTCOME}"
+run	Conclude from orchestrator outcome	2026-11-01T12:05:42.3104107Z ^[[36;1mecho "orchestrator outcome: ${OUTCOME}"^[[0m
+run	Conclude from orchestrator outcome	2026-11-01T12:05:42.3104417Z ^[[36;1m[ "$OUTCOME" = "success" ]^[[0m
+run	Conclude from orchestrator outcome	2026-11-01T12:05:42.3123891Z shell: /usr/bin/bash -e {0}
+run	Conclude from orchestrator outcome	2026-11-01T12:05:42.3124150Z env:
+run	Conclude from orchestrator outcome	2026-11-01T12:05:42.3124351Z   AWS_REGION: ap-northeast-1
+run	Conclude from orchestrator outcome	2026-11-01T12:05:42.3124610Z   JOB_TIMEOUT_SECONDS: 300
+run	Conclude from orchestrator outcome	2026-11-01T12:05:42.3124881Z   HEAD_SHA: 7f75327cd8ae33e39747a6b6b390c658d201b86b
+run	Conclude from orchestrator outcome	2026-11-01T12:05:42.3125185Z   PR_NUMBER: 6
+run	Conclude from orchestrator outcome	2026-11-01T12:05:42.3125403Z   AWS_DEFAULT_REGION: ap-northeast-1
+run	Conclude from orchestrator outcome	2026-11-01T12:05:42.3125672Z   OUTCOME: skipped
+run	Conclude from orchestrator outcome	2026-11-01T12:05:42.3125887Z ##[endgroup]
+run	Conclude from orchestrator outcome	2026-11-01T12:05:42.3166999Z orchestrator outcome: skipped
+run	Conclude from orchestrator outcome	2026-11-01T12:05:42.3173157Z ##[error]Process completed with exit code 1.

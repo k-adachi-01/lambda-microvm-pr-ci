@@ -22,6 +22,19 @@ REGION = "ap-northeast-1"
 NOT_FOUND_CODES = {"ResourceNotFoundException", "ResourceNotFound", "NotFound"}
 
 
+def parse_time(value):
+    """Normalise the list API's timestamp field (boto3 datetime or ISO string)."""
+    if value is None:
+        return None
+    if isinstance(value, datetime):
+        return value
+    if isinstance(value, (int, float)):
+        return datetime.fromtimestamp(value, tz=timezone.utc)
+    if isinstance(value, str):
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    return None
+
+
 def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--bucket", required=True)
@@ -50,11 +63,12 @@ def main() -> int:
                 continue
             mid = item.get("microvmId")
             state = item.get("state")
-            created = item.get("createdAt")
-            if isinstance(created, (int, float)):
-                created = datetime.fromtimestamp(created, tz=timezone.utc)
-            stale = created is not None and created < cutoff
-            rec = {"microvmId": mid, "state": state, "createdAt": str(created), "stale": stale}
+            # list-microvms exposes startedAt (not createdAt); get-microvm also
+            # uses startedAt. Without this fallback every VM looks ageless and
+            # the sweeper silently never terminates anything.
+            started = parse_time(item.get("startedAt") or item.get("createdAt"))
+            stale = started is not None and started < cutoff
+            rec = {"microvmId": mid, "state": state, "startedAt": str(started), "stale": stale}
             if state != "TERMINATED" and stale:
                 if not args.dry_run:
                     try:

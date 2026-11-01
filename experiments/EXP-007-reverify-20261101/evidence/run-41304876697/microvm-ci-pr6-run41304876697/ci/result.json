@@ -1,0 +1,19 @@
+{
+  "durationMs": 171,
+  "endedAt": 1793534802.9153943,
+  "error": "artifact sha256 mismatch",
+  "jobId": "pr6-r41304876697-a1",
+  "phases": {
+    "download": {
+      "bytes": 50869,
+      "ms": 171,
+      "sha256": "03d58ee33125a03873c05d0df1c7ea8e33c2051b57236c16210333060762c424",
+      "sha256Match": false
+    }
+  },
+  "resultUpload": {
+    "status": 200
+  },
+  "startedAt": 1793534802.743847,
+  "status": "failed"
+}

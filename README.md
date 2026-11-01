@@ -114,3 +114,4 @@ experiments/EXP-*/REPORT.md に実測を記録する（AGENTS.md の証拠区分
 - バーストの支配的失敗は `ServiceQuotaExceededException`（同時メモリ 8GiB 枠）— retryable 化済
 - 比較: GHA-hosted 5-15s / CodeBuild 9-11.5s / MicroVM CI 29-40s E2E、queue≈0
 - 注意: 検証中 private repo で hosted runner 課金障害が起き、repo を public 化して回避した（機微情報なし設計）
+- 2026-11-01 再検証: レビュー指摘 3 件の修正、fail-closed 化、sweeper の `startedAt` バグ修正、回帰テスト 24 件、再構築した環境での pass/fail/timeout/OIDC 拒否/fork ゲート/sha 偽装を確認。詳細は [experiments/EXP-007-reverify-20261101/REPORT.md](experiments/EXP-007-reverify-20261101/REPORT.md) `[実測]`

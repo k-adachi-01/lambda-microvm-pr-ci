@@ -1,0 +1,55 @@
+{"roles":
+[
+    {
+        "name": "k344-prci-build-role",
+        "arn": "arn:aws:iam::155936382172:role/k344-prci-build-role"
+    },
+    {
+        "name": "k344-prci-execution-role",
+        "arn": "arn:aws:iam::155936382172:role/k344-prci-execution-role"
+    },
+    {
+        "name": "k344-prci-github-actions-role",
+        "arn": "arn:aws:iam::155936382172:role/k344-prci-github-actions-role"
+    }
+]
+,"bucket":
+{"exists":true}
+,"images":
+[
+    {
+        "arn": "arn:aws:lambda:ap-northeast-1:155936382172:microvm-image:k344-ci",
+        "state": "UPDATED"
+    }
+]
+,"vms":
+[
+    {
+        "id": "microvm-10edcd33-87c9-3185-9793-b450cdaa8504",
+        "state": "TERMINATED"
+    },
+    {
+        "id": "microvm-221895a7-c9d6-3fd3-8951-223a9efc71fa",
+        "state": "TERMINATED"
+    },
+    {
+        "id": "microvm-6a939cba-ad26-3ca1-a27d-9ea72112249d",
+        "state": "TERMINATED"
+    },
+    {
+        "id": "microvm-8d7e04b6-1015-3e58-8d1b-bbd6aba311e0",
+        "state": "TERMINATED"
+    },
+    {
+        "id": "microvm-a1bd5d47-b570-3bd6-a3ff-a7dcb7968eeb",
+        "state": "TERMINATED"
+    }
+]
+,"stacks":
+[
+    {
+        "name": "CDKToolkit",
+        "status": "CREATE_COMPLETE"
+    }
+]
+}

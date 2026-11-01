@@ -1,0 +1,5 @@
+== delstack
+delstack version 2.12.3
+== CloudFormation stacks in ap-northeast-1
+CDKToolkit
+delstack: no K-344 CloudFormation stacks to delete

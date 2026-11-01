@@ -1,17 +1,72 @@
 {
   "pr4_rapid_pushes": [
-    {"run_id": 39290772785, "head_sha": "95be898f", "event": "pull_request_target(opened)", "conclusion": "cancelled"},
-    {"run_id": 39290803051, "head_sha": "619c3868", "event": "pull_request_target(synchronize)", "conclusion": "cancelled"},
-    {"run_id": 39290825430, "head_sha": "6ed0763c", "event": "pull_request_target(synchronize)", "conclusion": "success"}
+    {
+      "run_id": 39290772785,
+      "head_sha": "95be898f",
+      "event": "pull_request_target(opened)",
+      "conclusion": "cancelled",
+      "microvmId": null,
+      "evidence": "evidence/run-39290772785/",
+      "note": "cancelled before summary.json was written; result/logs retained"
+    },
+    {
+      "run_id": 39290803051,
+      "head_sha": "619c3868",
+      "event": "pull_request_target(synchronize)",
+      "conclusion": "cancelled",
+      "microvmId": null,
+      "evidence": "evidence/run-39290803051/",
+      "note": "no artifact; run metadata/log retained"
+    },
+    {
+      "run_id": 39290825430,
+      "head_sha": "6ed0763c",
+      "event": "pull_request_target(synchronize)",
+      "conclusion": "success",
+      "microvmId": "microvm-d6d2d64a-943e-3d01-b10e-5ff514c0d275",
+      "evidence": "evidence/run-39290825430/"
+    }
   ],
   "same_pr_double_dispatch": [
-    {"run_id": 39291975852, "conclusion": "cancelled", "note": "superseded by newer dispatch in same concurrency group microvm-ci-4"},
-    {"run_id": 39291987587, "conclusion": "success"}
+    {
+      "run_id": 39291975852,
+      "conclusion": "cancelled",
+      "microvmId": "microvm-8595fd26-a1ed-3acd-891e-b79c5e0951b5",
+      "evidence": "evidence/run-39291975852/",
+      "note": "superseded by newer dispatch in the same concurrency group; the job itself had already completed successfully"
+    },
+    {
+      "run_id": 39291987587,
+      "conclusion": "success",
+      "microvmId": "microvm-74551c07-ff49-316c-9a5f-3a749bd932bd",
+      "evidence": "evidence/run-39291987587/"
+    }
   ],
   "parallel_prs": [
-    {"pr": 4, "run_id": 39290772785, "image": "k344-ci", "result": "cancelled by head-sha update"},
-    {"pr": 5, "run_id": 39290785226, "image": "k344-ci", "result": "success (52s, incl. 20s slow test)", "microvmId": "from summary.json"},
-    {"pr": 3, "run_id": 39290342885, "image": "k344-ci", "result": "success (36s)"}
+    {
+      "pr": 4,
+      "run_id": 39290772785,
+      "image": "k344-ci",
+      "result": "cancelled by head-sha update",
+      "microvmId": null,
+      "evidence": "evidence/run-39290772785/"
+    },
+    {
+      "pr": 5,
+      "run_id": 39290785226,
+      "image": "k344-ci",
+      "result": "success (52s, incl. 20s slow test)",
+      "microvmId": "microvm-b8eaf589-8abb-3972-9108-36a44255745d",
+      "evidence": "evidence/run-39290785226/"
+    },
+    {
+      "pr": 3,
+      "run_id": 39290342885,
+      "image": "k344-ci",
+      "result": "success (36s)",
+      "microvmId": "microvm-ddf8df50-3f7b-3379-8028-c55dfa2c6c36",
+      "evidence": "../EXP-003-boundary/evidence/run-39290342885/"
+    }
   ],
   "quota_context": "account applied quota: RunMicrovm 1 req/s rate, 8 GiB concurrent microVM memory (K-346 EXP-001); k344-ci image minMemoryInMiB=2048 => max ~4 concurrent VMs"
 }

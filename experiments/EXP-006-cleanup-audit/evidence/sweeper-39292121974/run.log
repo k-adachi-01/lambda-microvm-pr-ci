@@ -1,0 +1,287 @@
+sweep	Set up job	﻿2026-10-19T17:12:33.1230592Z Current runner version: '2.337.0'
+sweep	Set up job	2026-10-19T17:12:33.1251788Z ##[group]Runner Image Provisioner
+sweep	Set up job	2026-10-19T17:12:33.1252499Z Hosted Compute Agent
+sweep	Set up job	2026-10-19T17:12:33.1253053Z Version: 20261012.601
+sweep	Set up job	2026-10-19T17:12:33.1253581Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+sweep	Set up job	2026-10-19T17:12:33.1254225Z Build Date: 2026-10-12T17:48:21Z
+sweep	Set up job	2026-10-19T17:12:33.1254843Z Worker ID: {90ac9f8a-f731-4d53-afd1-38854b3db463}
+sweep	Set up job	2026-10-19T17:12:33.1255465Z Region: westus3
+sweep	Set up job	2026-10-19T17:12:33.1255943Z Cloud: Azure
+sweep	Set up job	2026-10-19T17:12:33.1256398Z ##[endgroup]
+sweep	Set up job	2026-10-19T17:12:33.1257570Z ##[group]Operating System
+sweep	Set up job	2026-10-19T17:12:33.1258174Z Ubuntu
+sweep	Set up job	2026-10-19T17:12:33.1258615Z 24.04.5
+sweep	Set up job	2026-10-19T17:12:33.1259070Z LTS
+sweep	Set up job	2026-10-19T17:12:33.1259538Z ##[endgroup]
+sweep	Set up job	2026-10-19T17:12:33.1259991Z ##[group]Runner Image
+sweep	Set up job	2026-10-19T17:12:33.1260526Z Image: ubuntu-24.04
+sweep	Set up job	2026-10-19T17:12:33.1261186Z Version: 20261012.334.1
+sweep	Set up job	2026-10-19T17:12:33.1262031Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+sweep	Set up job	2026-10-19T17:12:33.1263498Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+sweep	Set up job	2026-10-19T17:12:33.1264297Z ##[endgroup]
+sweep	Set up job	2026-10-19T17:12:33.1265194Z ##[group]GITHUB_TOKEN Permissions
+sweep	Set up job	2026-10-19T17:12:33.1266883Z Contents: read
+sweep	Set up job	2026-10-19T17:12:33.1267414Z Metadata: read
+sweep	Set up job	2026-10-19T17:12:33.1268175Z ##[endgroup]
+sweep	Set up job	2026-10-19T17:12:33.1269877Z Secret source: Actions
+sweep	Set up job	2026-10-19T17:12:33.1270836Z Cache mode: write
+sweep	Set up job	2026-10-19T17:12:33.1271462Z Prepare workflow directory
+sweep	Set up job	2026-10-19T17:12:33.1524209Z Prepare all required actions
+sweep	Set up job	2026-10-19T17:12:33.1562560Z Getting action download info
+sweep	Set up job	2026-10-19T17:12:33.4662694Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+sweep	Set up job	2026-10-19T17:12:33.6581950Z Download action repository 'astral-sh/setup-uv@v5' (SHA:d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86)
+sweep	Set up job	2026-10-19T17:12:34.5547657Z Download action repository 'aws-actions/configure-aws-credentials@v4' (SHA:7474bc4690e29a8392af63c5b98e7449536d5c3a)
+sweep	Set up job	2026-10-19T17:12:35.3184369Z Complete job name: sweep
+sweep	Run actions/checkout@v4	﻿2026-10-19T17:12:35.3924861Z ##[group]Run actions/checkout@v4
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.3926419Z with:
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.3927533Z   repository: k-adachi-01/lambda-microvm-pr-ci
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.3937683Z   token: ***
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.3938419Z   ssh-strict: true
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.3939127Z   ssh-user: git
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.3939852Z   persist-credentials: true
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.3940639Z   clean: true
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.3941540Z   sparse-checkout-cone-mode: true
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.3942385Z   fetch-depth: 1
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.3943088Z   fetch-tags: false
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.3943813Z   show-progress: true
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.3944611Z   lfs: false
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.3945291Z   submodules: false
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.3946023Z   set-safe-directory: true
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.3946855Z   allow-unsafe-pr-checkout: false
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.3948041Z ##[endgroup]
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.4812579Z Syncing repository: k-adachi-01/lambda-microvm-pr-ci
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.4815934Z ##[group]Getting Git version info
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.4817891Z Working directory is '/home/runner/work/lambda-microvm-pr-ci/lambda-microvm-pr-ci'
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.4820817Z [command]/usr/bin/git version
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5036586Z git version 2.55.0
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5054254Z ##[endgroup]
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5072030Z Temporarily overriding HOME='/home/runner/work/_temp/1657d090-782e-4a4b-89cf-d06a1af07863' before making global git config changes
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5081165Z Adding repository directory to the temporary git global config as a safe directory
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5084376Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/lambda-microvm-pr-ci/lambda-microvm-pr-ci
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5142409Z Deleting the contents of '/home/runner/work/lambda-microvm-pr-ci/lambda-microvm-pr-ci'
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5145419Z ##[group]Initializing the repository
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5148714Z [command]/usr/bin/git init /home/runner/work/lambda-microvm-pr-ci/lambda-microvm-pr-ci
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5231503Z hint: Using 'master' as the name for the initial branch. This default branch name
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5233991Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5236230Z hint: to use in all of your new repositories, which will suppress this warning,
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5237974Z hint: call:
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5238895Z hint:
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5239859Z hint: 	git config --global init.defaultBranch <name>
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5241191Z hint:
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5242115Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5243580Z hint: 'development'. The just-created branch can be renamed via this command:
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5244738Z hint:
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5245400Z hint: 	git branch -m <name>
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5246152Z hint:
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5247146Z hint: Disable this message with "git config set advice.defaultBranchName false"
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5248934Z Initialized empty Git repository in /home/runner/work/lambda-microvm-pr-ci/lambda-microvm-pr-ci/.git/
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5253258Z [command]/usr/bin/git remote add origin https://github.com/k-adachi-01/lambda-microvm-pr-ci
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5299796Z ##[endgroup]
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5301865Z ##[group]Disabling automatic garbage collection
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5303271Z [command]/usr/bin/git config --local gc.auto 0
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5354332Z ##[endgroup]
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5356017Z ##[group]Setting up auth
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5360786Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5392525Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5668401Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5702517Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5891512Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.5920865Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.6112017Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.6146863Z ##[endgroup]
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.6148299Z ##[group]Fetching the repository
+sweep	Run actions/checkout@v4	2026-10-19T17:12:35.6156703Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +cfd1b47ccbd4822804ae32ee6f48fa6c9869848a:refs/remotes/origin/main
+sweep	Run actions/checkout@v4	2026-10-19T17:12:36.0777008Z From https://github.com/k-adachi-01/lambda-microvm-pr-ci
+sweep	Run actions/checkout@v4	2026-10-19T17:12:36.0778421Z  * [new ref]         cfd1b47ccbd4822804ae32ee6f48fa6c9869848a -> origin/main
+sweep	Run actions/checkout@v4	2026-10-19T17:12:36.0781490Z ##[endgroup]
+sweep	Run actions/checkout@v4	2026-10-19T17:12:36.0788916Z ##[group]Determining the checkout info
+sweep	Run actions/checkout@v4	2026-10-19T17:12:36.0789534Z ##[endgroup]
+sweep	Run actions/checkout@v4	2026-10-19T17:12:36.0790030Z [command]/usr/bin/git sparse-checkout disable
+sweep	Run actions/checkout@v4	2026-10-19T17:12:36.0838457Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+sweep	Run actions/checkout@v4	2026-10-19T17:12:36.0865874Z ##[group]Checking out the ref
+sweep	Run actions/checkout@v4	2026-10-19T17:12:36.0868905Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+sweep	Run actions/checkout@v4	2026-10-19T17:12:36.0927655Z Switched to a new branch 'main'
+sweep	Run actions/checkout@v4	2026-10-19T17:12:36.0932778Z branch 'main' set up to track 'origin/main'.
+sweep	Run actions/checkout@v4	2026-10-19T17:12:36.0936603Z ##[endgroup]
+sweep	Run actions/checkout@v4	2026-10-19T17:12:36.0972758Z [command]/usr/bin/git log -1 --format=%H
+sweep	Run actions/checkout@v4	2026-10-19T17:12:36.0996163Z cfd1b47ccbd4822804ae32ee6f48fa6c9869848a
+sweep	Run astral-sh/setup-uv@v5	﻿2026-10-19T17:12:36.1218663Z ##[group]Run astral-sh/setup-uv@v5
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:36.1219099Z with:
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:36.1221205Z   github-token: ***
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:36.1221692Z   enable-cache: auto
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:36.1222119Z   cache-dependency-glob: **/uv.lock
+sweep	Run astral-sh/setup-uv@v5	**/requirements*.txt
+sweep	Run astral-sh/setup-uv@v5	
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:36.1222532Z   prune-cache: true
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:36.1222854Z   ignore-nothing-to-cache: false
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:36.1223204Z   ignore-empty-workdir: false
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:36.1223518Z ##[endgroup]
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:36.2714890Z (node:2201) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:36.2715592Z (Use `node --trace-deprecation ...` to show where the warning was created)
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:36.6560464Z Downloading uv from "https://github.com/astral-sh/uv/releases/download/0.13.1/uv-x86_64-unknown-linux-gnu.tar.gz" ...
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:37.0568389Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/ffc42dc4-6005-4cbf-9130-ae0b1613ec29 -f /home/runner/work/_temp/8bbf99fe-baa4-4408-a094-8f8b652a18fb
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:37.5215654Z Added /home/runner/.local/bin to the path
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:37.5218052Z Added /opt/hostedtoolcache/uv/0.13.1/x86_64 to the path
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:37.5237414Z Set UV_CACHE_DIR to /home/runner/work/_temp/setup-uv-cache
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:37.5237751Z Successfully installed uv version 0.13.1
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:37.5238103Z Searching files using cache dependency glob: **/uv.lock,**/requirements*.txt
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:37.5423433Z /home/runner/work/lambda-microvm-pr-ci/lambda-microvm-pr-ci/uv.lock
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:37.5434928Z Found 1 files to hash.
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:37.5951062Z Trying to restore uv cache from GitHub Actions cache with key: setup-uv-1-x86_64-unknown-linux-gnu-3.12.3-e302cdabbd521bdd09bface15ef8f4da8518e36f2b9f14b8f2fdc9ef30c49b00
+sweep	Run astral-sh/setup-uv@v5	2026-10-19T17:12:37.7851806Z No GitHub Actions cache found for key: setup-uv-1-x86_64-unknown-linux-gnu-3.12.3-e302cdabbd521bdd09bface15ef8f4da8518e36f2b9f14b8f2fdc9ef30c49b00
+sweep	Configure AWS credentials (OIDC)	﻿2026-10-19T17:12:37.8029835Z ##[group]Run aws-actions/configure-aws-credentials@v4
+sweep	Configure AWS credentials (OIDC)	2026-10-19T17:12:37.8030128Z with:
+sweep	Configure AWS credentials (OIDC)	2026-10-19T17:12:37.8030399Z   role-to-assume: arn:aws:iam::155936382172:role/k344-prci-github-actions-role
+sweep	Configure AWS credentials (OIDC)	2026-10-19T17:12:37.8030916Z   aws-region: ap-northeast-1
+sweep	Configure AWS credentials (OIDC)	2026-10-19T17:12:37.8031149Z   audience: sts.amazonaws.com
+sweep	Configure AWS credentials (OIDC)	2026-10-19T17:12:37.8031391Z   output-env-credentials: true
+sweep	Configure AWS credentials (OIDC)	2026-10-19T17:12:37.8031584Z env:
+sweep	Configure AWS credentials (OIDC)	2026-10-19T17:12:37.8031787Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+sweep	Configure AWS credentials (OIDC)	2026-10-19T17:12:37.8032036Z ##[endgroup]
+sweep	Configure AWS credentials (OIDC)	2026-10-19T17:12:38.1277663Z Assuming role with OIDC
+sweep	Configure AWS credentials (OIDC)	2026-10-19T17:12:38.5052283Z Authenticated as assumedRoleId AROASITUILTONC6GCZX7P:GitHubActions
+sweep	Sweep stale MicroVMs + S3 objects	﻿2026-10-19T17:12:38.6427372Z ##[group]Run mkdir -p out/sweeper
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6427733Z ^[[36;1mmkdir -p out/sweeper^[[0m
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6428008Z ^[[36;1muv run python scripts/cleanup_stale.py \^[[0m
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6428315Z ^[[36;1m  --bucket "k344-prci-155936382172" \^[[0m
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6428690Z ^[[36;1m  --image-arn "arn:aws:lambda:ap-northeast-1:155936382172:microvm-image:k344-ci" \^[[0m
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6429083Z ^[[36;1m  --max-age-minutes 20 --s3-max-age-days 2 \^[[0m
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6429398Z ^[[36;1m  | tee "out/sweeper/sweep-$(date -u +%Y%m%dT%H%M%SZ).json"^[[0m
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6683471Z shell: /usr/bin/bash -e {0}
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6683753Z env:
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6684009Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6684315Z   AWS_DEFAULT_REGION: ap-northeast-1
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6684546Z   AWS_REGION: ap-northeast-1
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6684917Z   AWS_ACCESS_KEY_ID: ***
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6685219Z   AWS_SECRET_ACCESS_KEY: ***
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6688855Z   AWS_SESSION_TOKEN: ***
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6689114Z ##[endgroup]
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6854339Z Using CPython 3.12.3 interpreter at: /usr/bin/python3
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.6854858Z Creating virtual environment at: .venv
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:38.7630062Z Downloading botocore (15.3MiB)
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:39.2279091Z  Downloaded botocore
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:39.2801292Z Installed 7 packages in 51ms
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9380177Z {
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9381103Z   "aliveVms": 0,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9381374Z   "dryRun": false,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9381608Z   "s3Deleted": 0,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9381911Z   "scannedAt": "2026-10-19T17:12:39.726467+00:00",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9382245Z   "vms": [
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9382494Z     {
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9382741Z       "createdAt": "None",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9383105Z       "microvmId": "microvm-076da163-a768-34ac-b084-b332c66e7ccb",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9383500Z       "stale": false,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9383753Z       "state": "TERMINATED"
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9383998Z     },
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9384214Z     {
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9384468Z       "createdAt": "None",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9384865Z       "microvmId": "microvm-1d81bff0-2e09-368e-9688-a59f599498f3",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9385273Z       "stale": false,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9385547Z       "state": "TERMINATED"
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9385818Z     },
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9386031Z     {
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9386272Z       "createdAt": "None",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9386659Z       "microvmId": "microvm-4cc6816c-d004-354d-b94e-dd9faf146290",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9387091Z       "stale": false,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9387379Z       "state": "TERMINATED"
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9387662Z     },
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9387890Z     {
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9388137Z       "createdAt": "None",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9388507Z       "microvmId": "microvm-58377e1b-661a-3738-ab31-a687b1f31ef5",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9388939Z       "stale": false,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9389193Z       "state": "TERMINATED"
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9389495Z     },
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9389756Z     {
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9389984Z       "createdAt": "None",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9390354Z       "microvmId": "microvm-74551c07-ff49-316c-9a5f-3a749bd932bd",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9390937Z       "stale": false,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9391213Z       "state": "TERMINATED"
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9391498Z     },
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9391720Z     {
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9391947Z       "createdAt": "None",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9392330Z       "microvmId": "microvm-8595fd26-a1ed-3acd-891e-b79c5e0951b5",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9392726Z       "stale": false,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9392984Z       "state": "TERMINATED"
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9393256Z     },
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9393475Z     {
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9393700Z       "createdAt": "None",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9394091Z       "microvmId": "microvm-8c13ffa7-f87d-3e35-a60f-881c44ad76b9",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9394504Z       "stale": false,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9394782Z       "state": "TERMINATED"
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9395044Z     },
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9395253Z     {
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9395500Z       "createdAt": "None",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9396154Z       "microvmId": "microvm-97ee922f-6760-3a33-8e91-07aac34753e6",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9396583Z       "stale": false,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9396870Z       "state": "TERMINATED"
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9397160Z     },
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9397425Z     {
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9397678Z       "createdAt": "None",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9398053Z       "microvmId": "microvm-a760258e-c51e-3962-8166-2606086a93b7",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9398487Z       "stale": false,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9398774Z       "state": "TERMINATED"
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9399075Z     },
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9399319Z     {
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9399566Z       "createdAt": "None",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9399970Z       "microvmId": "microvm-ae6dc977-db45-36a1-9d05-084ea105adb8",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9400407Z       "stale": false,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9400927Z       "state": "TERMINATED"
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9401295Z     },
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9401564Z     {
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9401829Z       "createdAt": "None",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9402228Z       "microvmId": "microvm-b8eaf589-8abb-3972-9108-36a44255745d",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9402664Z       "stale": false,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9402953Z       "state": "TERMINATED"
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9403239Z     },
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9403478Z     {
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9403732Z       "createdAt": "None",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9404129Z       "microvmId": "microvm-d6d2d64a-943e-3d01-b10e-5ff514c0d275",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9404769Z       "stale": false,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9405046Z       "state": "TERMINATED"
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9405334Z     },
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9405574Z     {
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9405813Z       "createdAt": "None",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9406234Z       "microvmId": "microvm-dc2e0f80-2561-35b7-9edb-dc3a6a353e49",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9406646Z       "stale": false,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9406929Z       "state": "TERMINATED"
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9407235Z     },
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9407473Z     {
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9407727Z       "createdAt": "None",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9408130Z       "microvmId": "microvm-ddf8df50-3f7b-3379-8028-c55dfa2c6c36",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9408563Z       "stale": false,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9408846Z       "state": "TERMINATED"
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9409127Z     },
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9409353Z     {
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9409611Z       "createdAt": "None",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9410012Z       "microvmId": "microvm-e3a713e8-0c5e-368d-8ded-77fa990815da",
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9410443Z       "stale": false,
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9410918Z       "state": "TERMINATED"
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9411199Z     }
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9411438Z   ]
+sweep	Sweep stale MicroVMs + S3 objects	2026-10-19T17:12:42.9411668Z }
+sweep	Post Configure AWS credentials (OIDC)	﻿2026-10-19T17:12:42.9833799Z Post job cleanup.
+sweep	Post Run astral-sh/setup-uv@v5	﻿2026-10-19T17:12:43.0728712Z Post job cleanup.
+sweep	Post Run astral-sh/setup-uv@v5	2026-10-19T17:12:43.1713411Z Pruning cache...
+sweep	Post Run astral-sh/setup-uv@v5	2026-10-19T17:12:43.1723000Z (node:2271) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+sweep	Post Run astral-sh/setup-uv@v5	2026-10-19T17:12:43.1723553Z (Use `node --trace-deprecation ...` to show where the warning was created)
+sweep	Post Run astral-sh/setup-uv@v5	2026-10-19T17:12:43.2442191Z Saving cache path: /home/runner/work/_temp/setup-uv-cache
+sweep	Post Run astral-sh/setup-uv@v5	2026-10-19T17:12:43.2609142Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/lambda-microvm-pr-ci/lambda-microvm-pr-ci --files-from manifest.txt --use-compress-program zstdmt
+sweep	Post Run astral-sh/setup-uv@v5	2026-10-19T17:12:43.5254767Z (node:2271) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+sweep	Post Run astral-sh/setup-uv@v5	2026-10-19T17:12:43.7254541Z Sent 1208 of 1208 (100.0%), 0.0 MBs/sec
+sweep	Post Run astral-sh/setup-uv@v5	2026-10-19T17:12:43.8858826Z cache saved with the key: setup-uv-1-x86_64-unknown-linux-gnu-3.12.3-e302cdabbd521bdd09bface15ef8f4da8518e36f2b9f14b8f2fdc9ef30c49b00
+sweep	Post Run actions/checkout@v4	﻿2026-10-19T17:12:43.8971847Z Post job cleanup.
+sweep	Post Run actions/checkout@v4	2026-10-19T17:12:43.9629659Z [command]/usr/bin/git version
+sweep	Post Run actions/checkout@v4	2026-10-19T17:12:43.9664106Z git version 2.55.0
+sweep	Post Run actions/checkout@v4	2026-10-19T17:12:43.9693603Z Temporarily overriding HOME='/home/runner/work/_temp/611d86db-335d-493f-94c8-e892e10437df' before making global git config changes
+sweep	Post Run actions/checkout@v4	2026-10-19T17:12:43.9694720Z Adding repository directory to the temporary git global config as a safe directory
+sweep	Post Run actions/checkout@v4	2026-10-19T17:12:43.9698922Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/lambda-microvm-pr-ci/lambda-microvm-pr-ci
+sweep	Post Run actions/checkout@v4	2026-10-19T17:12:43.9729933Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+sweep	Post Run actions/checkout@v4	2026-10-19T17:12:43.9758332Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+sweep	Post Run actions/checkout@v4	2026-10-19T17:12:43.9967972Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+sweep	Post Run actions/checkout@v4	2026-10-19T17:12:43.9990352Z http.https://github.com/.extraheader
+sweep	Post Run actions/checkout@v4	2026-10-19T17:12:43.9999462Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+sweep	Post Run actions/checkout@v4	2026-10-19T17:12:44.0031405Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+sweep	Post Run actions/checkout@v4	2026-10-19T17:12:44.0269791Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+sweep	Post Run actions/checkout@v4	2026-10-19T17:12:44.0325570Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+sweep	Complete job	﻿2026-10-19T17:12:44.1449160Z Cleaning up orphan processes
+sweep	Complete job	2026-10-19T17:12:44.1688090Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, astral-sh/setup-uv@v5, aws-actions/configure-aws-credentials@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

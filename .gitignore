@@ -4,5 +4,5 @@ __pycache__/
 *.pyc
 infra/outputs.env
 head.tgz
-oidc-claims.json
+/oidc-claims.json
 .DS_Store

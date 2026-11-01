@@ -22,9 +22,9 @@
 
 | 注入 | run / 手段 | 観測 |
 |---|---|---|
-| OIDC 拒否（build-role を指定） | `39291217778` | `Configure AWS credentials` step で失敗。VM 起動せず。Check=fail（`microvm-ci: ` title 空の check output）[実測] |
+| OIDC 拒否（build-role を指定） | `39291217778` | `Configure AWS credentials` step で失敗。VM 起動せず。Check=fail（2026-11-01 の修正後は title `microvm-ci: no-status`）[実測: `evidence/run-39291217778/`] |
 | job timeout 10s（20s テスト） | `39291213262` | `job_s=10.68s` で step `exitCode=None,timedOut` → jobStatus=failed → Check `microvm-ci: failed`。VM `microvm-e3a713e8` TERMINATED [実測] |
-| runner cancel（VM RUNNING 中） | `39291034787` を `gh run cancel` | `microvm-4cc6816c` は RUNNING から TERMINATED に遷移。SIGTERM→finally の経路で回収 [実測] |
+| runner cancel（VM RUNNING 中） | `39291034787` を `gh run cancel` | `microvm-4cc6816c` は RUNNING から TERMINATED に遷移。SIGTERM→finally の経路で回収 [実測: `evidence/run-39291034787/`] |
 | S3 不整合（sha 偽装） | `39291207820` | `job_s=0.351s` で即 reject → jobStatus=failed → Check `microvm-ci: failed`。VM `microvm-dc2e0f80` TERMINATED [実測] |
 | RunMicrovm 過負荷 | lease 下 5 並列 burst | 3 成功 / 2 が `ServiceQuotaExceededException` ×6 リトライ全失敗。429 系ではなく**同時メモリ 8GiB クォータ超過**が支配的。`ci_job.py` の retryable codes に追加済（`evidence/throttle-burst.json`）[実測] |
 

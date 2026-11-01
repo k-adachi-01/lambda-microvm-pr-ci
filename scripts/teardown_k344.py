@@ -65,6 +65,7 @@ def main() -> int:
     s3 = session.client("s3")
     iam = session.client("iam")
     logs = session.client("logs")
+    codebuild = session.client("codebuild")
 
     out: dict = {
         "startedAt": datetime.now(timezone.utc).isoformat(),
@@ -158,19 +159,32 @@ def main() -> int:
         except ClientError as exc:
             act("iam", name, f"role delete failed: {exc}")
 
-    # 5. Log groups created by image builds / VM runs
-    for group in logs.describe_log_groups(
-        logGroupNamePrefix=f"/aws/lambda-microvms/{IMAGE_NAME}"
-    ).get("logGroups", []):
-        name = group["logGroupName"]
+    # 5. Log groups created by image builds / VM runs / the CodeBuild baseline
+    prefixes = [f"/aws/lambda-microvms/{IMAGE_NAME}", "/aws/codebuild/k344-prci"]
+    for prefix in prefixes:
+        for group in logs.describe_log_groups(logGroupNamePrefix=prefix).get("logGroups", []):
+            name = group["logGroupName"]
+            if not args.apply:
+                act("logs", name, "would delete")
+                continue
+            try:
+                logs.delete_log_group(logGroupName=name)
+                act("logs", name, "deleted")
+            except ClientError as exc:
+                act("logs", name, f"delete failed: {exc}")
+
+    # 6. CodeBuild comparison project (created by infra/deploy-codebuild.sh)
+    for project in codebuild.list_projects().get("projects", []):
+        if not project.startswith("k344-prci"):
+            continue
         if not args.apply:
-            act("logs", name, "would delete")
+            act("codebuild", project, "would delete")
             continue
         try:
-            logs.delete_log_group(logGroupName=name)
-            act("logs", name, "deleted")
+            codebuild.delete_project(name=project)
+            act("codebuild", project, "project deleted")
         except ClientError as exc:
-            act("logs", name, f"delete failed: {exc}")
+            act("codebuild", project, f"delete failed: {exc}")
 
     out["finishedAt"] = datetime.now(timezone.utc).isoformat()
     text = json.dumps(out, indent=2, sort_keys=True)
